@@ -18,6 +18,7 @@
 //! ```
 //! extern crate comrak;
 //! extern crate typed_arena;
+//! use std::borrow::Cow;
 //! use typed_arena::Arena;
 //! use comrak::{parse_document, format_html, ComrakOptions};
 //! use comrak::nodes::{AstNode, NodeValue};
@@ -42,8 +43,8 @@
 //! iter_nodes(root, &|node| {
 //!     match &mut node.data.borrow_mut().value {
 //!         &mut NodeValue::Text(ref mut text) => {
-//!             let orig = std::mem::replace(text, vec![]);
-//!             *text = String::from_utf8(orig).unwrap().replace("my", "your").as_bytes().to_vec();
+//!             let orig = std::mem::replace(text, Cow::from(vec![]));
+//!             *text = Cow::from(String::from_utf8(orig.into_owned()).unwrap().replace("my", "your").as_bytes().to_vec());
 //!         }
 //!         _ => (),
 //!     }

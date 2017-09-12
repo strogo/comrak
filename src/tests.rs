@@ -38,7 +38,9 @@ where
 
     let mut md = vec![];
     cm::format_document(root, &options, &mut md).unwrap();
-    let root = parse_document(&arena, &String::from_utf8(md).unwrap(), &options);
+    let md = String::from_utf8(md).unwrap();
+    let arena = Arena::new();
+    let root = parse_document(&arena, &md, &options);
     let mut output_from_rt = vec![];
     html::format_document(root, &options, &mut output_from_rt).unwrap();
     compare_strs(&String::from_utf8(output_from_rt).unwrap(), expected, "roundtrip");

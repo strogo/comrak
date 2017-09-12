@@ -1,15 +1,16 @@
 use ctype::{ispunct, isspace};
 use entity;
-use parser::AutolinkType;
+use parser::{AutolinkType, cow_range};
+use std::borrow::Cow;
 use std::str;
 
-pub fn unescape(v: &mut Vec<u8>) {
+pub fn unescape<'a>(v: &mut Cow<'a, [u8]>) {
     let mut r = 0;
     let mut sz = v.len();
 
     while r < sz {
         if v[r] == b'\\' && r + 1 < sz && ispunct(v[r + 1]) {
-            v.remove(r);
+            v.to_mut().remove(r);
             sz -= 1;
         }
         if r >= sz {
@@ -19,21 +20,22 @@ pub fn unescape(v: &mut Vec<u8>) {
     }
 }
 
-pub fn clean_autolink(url: &[u8], kind: AutolinkType) -> Vec<u8> {
-    let mut url_vec = url.to_vec();
+pub fn clean_autolink<'a>(url: &Cow<'a, [u8]>, kind: AutolinkType) -> Cow<'a, [u8]> {
+    let mut url_vec = url.clone();
     trim(&mut url_vec);
 
     if url_vec.is_empty() {
         return url_vec;
     }
 
-    let mut buf = Vec::with_capacity(url_vec.len());
     if kind == AutolinkType::Email {
+        let mut buf = Vec::with_capacity(7 + url_vec.len());
         buf.extend_from_slice(b"mailto:");
+        buf.extend_from_slice(&entity::unescape_html(&url_vec));
+        Cow::from(buf)
+    } else {
+        entity::unescape_html(&url_vec)
     }
-
-    buf.extend_from_slice(&entity::unescape_html(&url_vec));
-    buf
 }
 
 pub fn normalize_whitespace(v: &[u8]) -> Vec<u8> {
@@ -68,7 +70,7 @@ pub fn normalize_whitespace(v: &[u8]) -> Vec<u8> {
     r
 }
 
-pub fn remove_trailing_blank_lines(line: &mut Vec<u8>) {
+pub fn remove_trailing_blank_lines<'a>(line: &mut Cow<'a, [u8]>) {
     let mut i = line.len() - 1;
     loop {
         let c = line[i];
@@ -78,7 +80,7 @@ pub fn remove_trailing_blank_lines(line: &mut Vec<u8>) {
         }
 
         if i == 0 {
-            line.clear();
+            line.to_mut().clear();
             return;
         }
 
@@ -92,7 +94,7 @@ pub fn remove_trailing_blank_lines(line: &mut Vec<u8>) {
             continue;
         }
 
-        line.truncate(i);
+        line.to_mut().truncate(i);
         break;
     }
 }
@@ -111,7 +113,7 @@ pub fn is_space_or_tab(ch: u8) -> bool {
     }
 }
 
-pub fn chop_trailing_hashtags(line: &mut Vec<u8>) {
+pub fn chop_trailing_hashtags<'a>(line: &mut Cow<'a, [u8]>) {
     rtrim(line);
 
     let orig_n = line.len() - 1;
@@ -125,28 +127,28 @@ pub fn chop_trailing_hashtags(line: &mut Vec<u8>) {
     }
 
     if n != orig_n && is_space_or_tab(line[n]) {
-        line.truncate(n);
+        line.to_mut().truncate(n);
         rtrim(line);
     }
 }
 
-pub fn rtrim(line: &mut Vec<u8>) {
+pub fn rtrim<'a>(line: &mut Cow<'a, [u8]>) {
     let mut len = line.len();
     while len > 0 && isspace(line[len - 1]) {
-        line.pop();
+        line.to_mut().pop();
         len -= 1;
     }
 }
 
-pub fn ltrim(line: &mut Vec<u8>) {
+pub fn ltrim<'a>(line: &mut Cow<'a, [u8]>) {
     let mut len = line.len();
     while len > 0 && isspace(line[0]) {
-        line.remove(0);
+        line.to_mut().remove(0);
         len -= 1;
     }
 }
 
-pub fn trim(line: &mut Vec<u8>) {
+pub fn trim<'a>(line: &mut Cow<'a, [u8]>) {
     ltrim(line);
     rtrim(line);
 }
@@ -170,28 +172,29 @@ pub fn trim_slice(mut i: &[u8]) -> &[u8] {
     i
 }
 
-pub fn clean_url(url: &[u8]) -> Vec<u8> {
-    let url = trim_slice(url);
+pub fn clean_url<'a>(url: &Cow<'a, [u8]>) -> Cow<'a, [u8]> {
+    let mut url = url.clone();
+    trim(&mut url);
 
     let url_len = url.len();
     if url_len == 0 {
-        return vec![];
+        return url;
     }
 
     let mut b = if url[0] == b'<' && url[url_len - 1] == b'>' {
-        entity::unescape_html(&url[1..url_len - 1])
+        entity::unescape_html(&cow_range(&url, 1..url_len - 1))
     } else {
-        entity::unescape_html(url)
+        entity::unescape_html(&url)
     };
 
     unescape(&mut b);
     b
 }
 
-pub fn clean_title(title: &[u8]) -> Vec<u8> {
+pub fn clean_title<'a>(title: &Cow<'a, [u8]>) -> Cow<'a, [u8]> {
     let title_len = title.len();
     if title_len == 0 {
-        return vec![];
+        return Cow::from(vec![]);
     }
 
     let first = title[0];
@@ -200,7 +203,7 @@ pub fn clean_title(title: &[u8]) -> Vec<u8> {
     let mut b = if (first == b'\'' && last == b'\'') || (first == b'(' && last == b')') ||
         (first == b'"' && last == b'"')
     {
-        entity::unescape_html(&title[1..title_len - 1])
+        entity::unescape_html(&cow_range(title, 1..title_len - 1))
     } else {
         entity::unescape_html(title)
     };

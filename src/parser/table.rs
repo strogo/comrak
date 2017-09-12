@@ -1,8 +1,9 @@
 use arena_tree::Node;
 
 use nodes::{NodeValue, TableAlignment, AstNode, make_block};
-use parser::Parser;
+use parser::{Parser, cow_range};
 use scanners;
+use std::borrow::Cow;
 use std::cell::RefCell;
 use std::cmp::min;
 use strings::trim;
@@ -10,7 +11,7 @@ use strings::trim;
 pub fn try_opening_block<'a, 'o>(
     parser: &mut Parser<'a, 'o>,
     container: &'a AstNode<'a>,
-    line: &[u8],
+    line: &Cow<'a, [u8]>,
 ) -> Option<(&'a AstNode<'a>, bool)> {
     let aligns = match container.data.borrow().value {
         NodeValue::Paragraph => None,
@@ -27,7 +28,7 @@ pub fn try_opening_block<'a, 'o>(
 fn try_opening_header<'a, 'o>(
     parser: &mut Parser<'a, 'o>,
     container: &'a AstNode<'a>,
-    line: &[u8],
+    line: &Cow<'a, [u8]>,
 ) -> Option<(&'a AstNode<'a>, bool)> {
     if scanners::table_start(&line[parser.first_nonspace..]).is_none() {
         return Some((container, false));
@@ -38,7 +39,7 @@ fn try_opening_header<'a, 'o>(
         None => return Some((container, false)),
     };
 
-    let marker_row = row(&line[parser.first_nonspace..]).unwrap();
+    let marker_row = row(&cow_range(&line, parser.first_nonspace..)).unwrap();
 
     if header_row.len() != marker_row.len() {
         return Some((container, false));
@@ -85,7 +86,7 @@ fn try_opening_row<'a, 'o>(
     parser: &mut Parser<'a, 'o>,
     container: &'a AstNode<'a>,
     alignments: &[TableAlignment],
-    line: &[u8],
+    line: &Cow<'a, [u8]>,
 ) -> Option<(&'a AstNode<'a>, bool)> {
     if parser.blank {
         return None;
@@ -123,7 +124,7 @@ fn try_opening_row<'a, 'o>(
     Some((new_row, false))
 }
 
-fn row(string: &[u8]) -> Option<Vec<Vec<u8>>> {
+fn row<'a>(string: &Cow<'a, [u8]>) -> Option<Vec<Cow<'a, [u8]>>> {
     let len = string.len();
     let mut v = vec![];
     let mut offset = 0;
@@ -138,7 +139,7 @@ fn row(string: &[u8]) -> Option<Vec<Vec<u8>>> {
             .unwrap_or(0);
 
         if cell_matched > 0 || pipe_matched > 0 {
-            let mut cell = unescape_pipes(&string[offset..offset + cell_matched]);
+            let mut cell = unescape_pipes(&cow_range(&string, offset..offset + cell_matched));
             trim(&mut cell);
             v.push(cell);
         }
@@ -162,29 +163,43 @@ fn row(string: &[u8]) -> Option<Vec<Vec<u8>>> {
     }
 }
 
-fn unescape_pipes(string: &[u8]) -> Vec<u8> {
+fn unescape_pipes<'a>(string: &Cow<'a, [u8]>) -> Cow<'a, [u8]> {
+    let len = string.len();
     let mut v = Vec::with_capacity(string.len());
-    let mut escaping = false;
+    let mut i = 0;
 
-    for &c in string {
-        // TODO
-        if escaping {
-            v.push(c);
-            escaping = false;
-        } else if c == b'\\' {
-            escaping = true;
-        } else {
-            v.push(c);
+    while i < len {
+        let org = i;
+        while i < len && string[i] != b'\\' {
+            i += 1;
+
         }
+
+        if i > org {
+            if org == 0 && i == len {
+                return string.clone();
+            }
+
+            v.extend_from_slice(&string[org..i]);
+        }
+
+        if i == len {
+            return Cow::from(v);
+        }
+
+        i += 1;
+
+        if i == len {
+            return Cow::from(v);
+        }
+
+        v.push(string[i]);
     }
 
-    if escaping {
-        v.push(b'\\');
-    }
-
-    v
+    Cow::from(v)
 }
 
 pub fn matches(line: &[u8]) -> bool {
-    row(line).is_some()
+    // TODO: wasteful
+    row(&Cow::from(line)).is_some()
 }

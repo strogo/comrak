@@ -2,9 +2,10 @@ use arena_tree::Node;
 use ctype::{isspace, ispunct};
 use entity;
 use nodes::{NodeValue, Ast, NodeLink, AstNode};
-use parser::{unwrap_into, unwrap_into_copy, ComrakOptions, Reference, AutolinkType};
+use parser::{unwrap_into, unwrap_into_copy, cow_range, ComrakOptions, Reference, AutolinkType};
 use scanners;
 
+use std::borrow::Cow;
 use std::cell::{Cell, RefCell};
 use std::collections::HashMap;
 use std::ptr;
@@ -16,12 +17,12 @@ use unicode_categories::UnicodeCategories;
 const MAXBACKTICKS: usize = 80;
 const MAX_LINK_LABEL_LENGTH: usize = 1000;
 
-pub struct Subject<'a: 'd, 'r, 'o, 'd, 'i> {
+pub struct Subject<'a: 'd, 'r, 'o, 'd: 'r> {
     pub arena: &'a Arena<AstNode<'a>>,
     options: &'o ComrakOptions,
-    pub input: &'i [u8],
+    pub input: Cow<'a, [u8]>,
     pub pos: usize,
-    pub refmap: &'r mut HashMap<Vec<u8>, Reference>,
+    pub refmap: &'r mut HashMap<Vec<u8>, Reference<'a>>,
     delimiter_arena: &'d Arena<Delimiter<'a, 'd>>,
     last_delimiter: Option<&'d Delimiter<'a, 'd>>,
     brackets: Vec<Bracket<'a, 'd>>,
@@ -48,12 +49,12 @@ struct Bracket<'a: 'd, 'd> {
     bracket_after: bool,
 }
 
-impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
+impl<'a, 'r, 'o, 'd> Subject<'a, 'r, 'o, 'd> {
     pub fn new(
         arena: &'a Arena<AstNode<'a>>,
         options: &'o ComrakOptions,
-        input: &'i [u8],
-        refmap: &'r mut HashMap<Vec<u8>, Reference>,
+        input: Cow<'a, [u8]>,
+        refmap: &'r mut HashMap<Vec<u8>, Reference<'a>>,
         delimiter_arena: &'d Arena<Delimiter<'a, 'd>>,
     ) -> Self {
         let mut s = Subject {
@@ -120,7 +121,7 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
             //'.' => new_inl => Some(self.handle_period()),
             '[' => {
                 self.pos += 1;
-                let inl = make_inline(self.arena, NodeValue::Text(b"[".to_vec()));
+                let inl = make_inline(self.arena, NodeValue::Text(b"[".to_vec().into()));
                 new_inl = Some(inl);
                 self.push_bracket(false, inl);
             }
@@ -129,11 +130,11 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
                 self.pos += 1;
                 if self.peek_char() == Some(&(b'[')) {
                     self.pos += 1;
-                    let inl = make_inline(self.arena, NodeValue::Text(b"![".to_vec()));
+                    let inl = make_inline(self.arena, NodeValue::Text(b"![".to_vec().into()));
                     new_inl = Some(inl);
                     self.push_bracket(true, inl);
                 } else {
-                    new_inl = Some(make_inline(self.arena, NodeValue::Text(b"!".to_vec())));
+                    new_inl = Some(make_inline(self.arena, NodeValue::Text(b"!".to_vec().into())));
                 }
             }
             _ => {
@@ -143,7 +144,7 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
                     new_inl = Some(self.handle_delim(b'^'));
                 } else {
                     let endpos = self.find_special_char();
-                    let mut contents = self.input[self.pos..endpos].to_vec();
+                    let mut contents = cow_range(&self.input, self.pos..endpos);
                     self.pos = endpos;
 
                     if self.peek_char().map_or(
@@ -154,7 +155,7 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
                         strings::rtrim(&mut contents);
                     }
 
-                    new_inl = Some(make_inline(self.arena, NodeValue::Text(contents)));
+                    new_inl = Some(make_inline(self.arena, NodeValue::Text(contents.into())));
                 }
             }
         }
@@ -257,7 +258,7 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
                         .borrow_mut()
                         .value
                         .text_mut()
-                        .unwrap() = "’".to_string().into_bytes();
+                        .unwrap() = "’".to_string().into_bytes().into();
                     if opener_found {
                         *opener
                             .unwrap()
@@ -266,7 +267,7 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
                             .borrow_mut()
                             .value
                             .text_mut()
-                            .unwrap() = "‘".to_string().into_bytes();
+                            .unwrap() = "‘".to_string().into_bytes().into();
                     }
                     closer = closer.unwrap().next.get();
                 } else if closer.unwrap().delim_char == b'"' {
@@ -277,7 +278,7 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
                         .borrow_mut()
                         .value
                         .text_mut()
-                        .unwrap() = "”".to_string().into_bytes();
+                        .unwrap() = "”".to_string().into_bytes().into();
                     if opener_found {
                         *opener
                             .unwrap()
@@ -286,7 +287,7 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
                             .borrow_mut()
                             .value
                             .text_mut()
-                            .unwrap() = "“".to_string().into_bytes();
+                            .unwrap() = "“".to_string().into_bytes().into();
                     }
                     closer = closer.unwrap().next.get();
                 }
@@ -416,12 +417,12 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
         match endpos {
             None => {
                 self.pos = startpos;
-                make_inline(self.arena, NodeValue::Text(vec![b'`'; openticks]))
+                make_inline(self.arena, NodeValue::Text(vec![b'`'; openticks].into()))
             }
             Some(endpos) => {
-                let mut buf = &self.input[startpos..endpos - openticks];
-                buf = strings::trim_slice(buf);
-                let buf = strings::normalize_whitespace(buf);
+                let mut buf = cow_range(&self.input, startpos..endpos - openticks);
+                strings::trim(&mut buf);
+                strings::normalize_whitespace(&mut buf);
                 make_inline(self.arena, NodeValue::Code(buf))
             }
         }
@@ -440,7 +441,7 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
         let (numdelims, can_open, can_close) = self.scan_delims(c);
 
         let contents = self.input[self.pos - numdelims..self.pos].to_vec();
-        let inl = make_inline(self.arena, NodeValue::Text(contents));
+        let inl = make_inline(self.arena, NodeValue::Text(contents.into()));
 
         if (can_open || can_close) && c != b'\'' && c != b'"' {
             self.push_delimiter(c, can_open, can_close, inl);
@@ -541,6 +542,7 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
             .value
             .text_mut()
             .unwrap()
+            .to_mut()
             .truncate(opener_num_chars);
         closer
             .inl
@@ -549,6 +551,7 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
             .value
             .text_mut()
             .unwrap()
+            .to_mut()
             .truncate(closer_num_chars);
 
         let mut delim = closer.prev.get();
@@ -603,12 +606,12 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
             // TODO
             make_inline(
                 self.arena,
-                NodeValue::Text(vec![self.input[self.pos - 1]]),
+                NodeValue::Text(vec![self.input[self.pos - 1]].into()),
             )
         } else if !self.eof() && self.skip_line_end() {
             make_inline(self.arena, NodeValue::LineBreak)
         } else {
-            make_inline(self.arena, NodeValue::Text(b"\\".to_vec()))
+            make_inline(self.arena, NodeValue::Text(b"\\".to_vec().into()))
         }
     }
 
@@ -627,7 +630,7 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
         self.pos += 1;
 
         match entity::unescape(&self.input[self.pos..]) {
-            None => make_inline(self.arena, NodeValue::Text(b"&".to_vec())),
+            None => make_inline(self.arena, NodeValue::Text(b"&".to_vec().into())),
             Some((entity, len)) => {
                 self.pos += len;
                 make_inline(self.arena, NodeValue::Text(entity))
@@ -641,7 +644,7 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
         if let Some(matchlen) = scanners::autolink_uri(&self.input[self.pos..]) {
             let inl = make_autolink(
                 self.arena,
-                &self.input[self.pos..self.pos + matchlen - 1],
+                &cow_range(&self.input, self.pos..self.pos + matchlen - 1),
                 AutolinkType::URI,
             );
             self.pos += matchlen;
@@ -651,7 +654,7 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
         if let Some(matchlen) = scanners::autolink_email(&self.input[self.pos..]) {
             let inl = make_autolink(
                 self.arena,
-                &self.input[self.pos..self.pos + matchlen - 1],
+                &cow_range(&self.input, self.pos..self.pos + matchlen - 1),
                 AutolinkType::Email,
             );
             self.pos += matchlen;
@@ -659,13 +662,13 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
         }
 
         if let Some(matchlen) = scanners::html_tag(&self.input[self.pos..]) {
-            let contents = &self.input[self.pos - 1..self.pos + matchlen];
-            let inl = make_inline(self.arena, NodeValue::HtmlInline(contents.to_vec()));
+            let contents = cow_range(&self.input, self.pos - 1..self.pos + matchlen);
+            let inl = make_inline(self.arena, NodeValue::HtmlInline(contents));
             self.pos += matchlen;
             return inl;
         }
 
-        make_inline(self.arena, NodeValue::Text(b"<".to_vec()))
+        make_inline(self.arena, NodeValue::Text(b"<".to_vec().into()))
     }
 
     pub fn push_bracket(&mut self, image: bool, inl_text: &'a AstNode<'a>) {
@@ -689,12 +692,12 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
 
         let brackets_len = self.brackets.len();
         if brackets_len == 0 {
-            return Some(make_inline(self.arena, NodeValue::Text(b"]".to_vec())));
+            return Some(make_inline(self.arena, NodeValue::Text(b"]".to_vec().into())));
         }
 
         if !self.brackets[brackets_len - 1].active {
             self.brackets.pop();
-            return Some(make_inline(self.arena, NodeValue::Text(b"]".to_vec())));
+            return Some(make_inline(self.arena, NodeValue::Text(b"]".to_vec().into())));
         }
 
         let is_image = self.brackets[brackets_len - 1].image;
@@ -723,8 +726,8 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
 
             if endall < self.input.len() && self.input[endall] == b')' {
                 self.pos = endall + 1;
-                let url = strings::clean_url(&self.input[starturl..endurl]);
-                let title = strings::clean_title(&self.input[starttitle..endtitle]);
+                let url = strings::clean_url(&cow_range(&self.input, starturl..endurl));
+                let title = strings::clean_title(&cow_range(&self.input, starttitle..endtitle));
                 self.close_bracket_match(is_image, url, title);
                 return None;
             } else {
@@ -746,7 +749,7 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
             found_label = true;
         }
 
-        let reff: Option<Reference> = if found_label {
+        let reff: Option<Reference<'a>> = if found_label {
             lab = strings::normalize_reference_label(&lab);
             self.refmap.get(&lab).cloned()
         } else {
@@ -760,10 +763,10 @@ impl<'a, 'r, 'o, 'd, 'i> Subject<'a, 'r, 'o, 'd, 'i> {
 
         self.brackets.pop();
         self.pos = initial_pos;
-        Some(make_inline(self.arena, NodeValue::Text(b"]".to_vec())))
+        Some(make_inline(self.arena, NodeValue::Text(b"]".to_vec().into())))
     }
 
-    pub fn close_bracket_match(&mut self, is_image: bool, url: Vec<u8>, title: Vec<u8>) {
+    pub fn close_bracket_match(&mut self, is_image: bool, url: Cow<'a, [u8]>, title: Cow<'a, [u8]>) {
         let nl = NodeLink {
             url: url,
             title: title,
@@ -899,10 +902,10 @@ pub fn manual_scan_link_url(input: &[u8]) -> Option<usize> {
     if i >= len { None } else { Some(i) }
 }
 
-pub fn make_inline<'a>(arena: &'a Arena<AstNode<'a>>, value: NodeValue) -> &'a AstNode<'a> {
+pub fn make_inline<'a>(arena: &'a Arena<AstNode<'a>>, value: NodeValue<'a>) -> &'a AstNode<'a> {
     let ast = Ast {
         value: value,
-        content: vec![],
+        content: Cow::from(vec![]),
         start_line: 0,
         start_column: 0,
         end_line: 0,
@@ -915,19 +918,19 @@ pub fn make_inline<'a>(arena: &'a Arena<AstNode<'a>>, value: NodeValue) -> &'a A
 
 fn make_autolink<'a>(
     arena: &'a Arena<AstNode<'a>>,
-    url: &[u8],
+    url: &Cow<'a, [u8]>,
     kind: AutolinkType,
 ) -> &'a AstNode<'a> {
     let inl = make_inline(
         arena,
         NodeValue::Link(NodeLink {
             url: strings::clean_autolink(url, kind),
-            title: vec![],
+            title: Cow::from(vec![]),
         }),
     );
     inl.append(make_inline(
         arena,
-        NodeValue::Text(entity::unescape_html(url)),
+        NodeValue::Text(entity::unescape_html(url).into()),
     ));
     inl
 }

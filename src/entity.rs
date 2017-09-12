@@ -1,6 +1,7 @@
 use ctype::isdigit;
 
 use entities::ENTITIES;
+use std::borrow::Cow;
 use std::char;
 use std::cmp::min;
 use std::str;
@@ -12,7 +13,7 @@ fn isxdigit(ch: &u8) -> bool {
     (*ch >= b'0' && *ch <= b'9') || (*ch >= b'a' && *ch <= b'f') || (*ch >= b'A' && *ch <= b'F')
 }
 
-pub fn unescape(text: &[u8]) -> Option<(Vec<u8>, usize)> {
+pub fn unescape(text: &[u8]) -> Option<(Cow<'static, [u8]>, usize)> {
     if text.len() >= 3 && text[0] == b'#' {
         let mut codepoint: u32 = 0;
         let mut i = 0;
@@ -44,7 +45,7 @@ pub fn unescape(text: &[u8]) -> Option<(Vec<u8>, usize)> {
                 codepoint = 0xFFFD;
             }
             return Some((
-                char::from_u32(codepoint).unwrap_or('\u{FFFD}').to_string().into_bytes(),
+                char::from_u32(codepoint).unwrap_or('\u{FFFD}').to_string().into_bytes().into(),
                 i + 1,
             ));
         }
@@ -57,14 +58,14 @@ pub fn unescape(text: &[u8]) -> Option<(Vec<u8>, usize)> {
         }
 
         if text[i] == b';' {
-            return lookup(&text[..i]).map(|e| (e.to_vec(), i + 1));
+            return lookup(&text[..i]).map(|e| (e.into(), i + 1));
         }
     }
 
     None
 }
 
-fn lookup(text: &[u8]) -> Option<&[u8]> {
+fn lookup(text: &[u8]) -> Option<&'static [u8]> {
     let entity_str = format!("&{};", unsafe {str::from_utf8_unchecked(text) });
 
     let entity = ENTITIES.iter().find(|e| e.entity == entity_str);
@@ -75,10 +76,10 @@ fn lookup(text: &[u8]) -> Option<&[u8]> {
     }
 }
 
-pub fn unescape_html(src: &[u8]) -> Vec<u8> {
+pub fn unescape_html<'a>(src: &Cow<'a, [u8]>) -> Cow<'a, [u8]> {
     let size = src.len();
     let mut i = 0;
-    let mut v = Vec::with_capacity(size);
+    let mut v = vec![];
 
     while i < size {
         let org = i;
@@ -88,14 +89,14 @@ pub fn unescape_html(src: &[u8]) -> Vec<u8> {
 
         if i > org {
             if org == 0 && i >= size {
-                return src.to_vec();
+                return src.clone();
             }
 
             v.extend_from_slice(&src[org..i]);
         }
 
         if i >= size {
-            return v;
+            return Cow::from(v);
         }
 
         i += 1;
@@ -108,5 +109,5 @@ pub fn unescape_html(src: &[u8]) -> Vec<u8> {
         }
     }
 
-    v
+    Cow::from(v)
 }

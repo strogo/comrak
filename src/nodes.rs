@@ -1,11 +1,12 @@
 //! The CommonMark AST.
 
 use arena_tree::Node;
+use std::borrow::Cow;
 use std::cell::RefCell;
 
 /// The core AST node enum.
 #[derive(Debug, Clone)]
-pub enum NodeValue {
+pub enum NodeValue<'a> {
     /// The root of every CommonMark document.  Contains **blocks**.
     Document,
 
@@ -36,11 +37,11 @@ pub enum NodeValue {
     /// **Block**. A code block; may be [fenced](https://github.github.com/gfm/#fenced-code-blocks)
     /// or [indented](https://github.github.com/gfm/#indented-code-blocks).  Contains raw text
     /// which is not parsed as Markdown, although is HTML escaped.
-    CodeBlock(NodeCodeBlock),
+    CodeBlock(NodeCodeBlock<'a>),
 
     /// **Block**. A [HTML block](https://github.github.com/gfm/#html-blocks).  Contains raw text
     /// which is neither parsed as Markdown nor HTML escaped.
-    HtmlBlock(NodeHtmlBlock),
+    HtmlBlock(NodeHtmlBlock<'a>),
 
     /// **Block**. A [paragraph](https://github.github.com/gfm/#paragraphs).  Contains **inlines**.
     Paragraph,
@@ -67,7 +68,7 @@ pub enum NodeValue {
 
     /// **Inline**.  [Textual content](https://github.github.com/gfm/#textual-content).  All text
     /// in a document will be contained in a `Text` node.
-    Text(Vec<u8>),
+    Text(Cow<'a, [u8]>),
 
     /// **Inline**.  A [soft line break](https://github.github.com/gfm/#soft-line-breaks).  If
     /// the `hardbreaks` option is set in `ComrakOptions` during formatting, it will be formatted
@@ -78,10 +79,10 @@ pub enum NodeValue {
     LineBreak,
 
     /// **Inline**.  A [code span](https://github.github.com/gfm/#code-spans).
-    Code(Vec<u8>),
+    Code(Cow<'a, [u8]>),
 
     /// **Inline**.  [Raw HTML](https://github.github.com/gfm/#raw-html) contained inline.
-    HtmlInline(Vec<u8>),
+    HtmlInline(Cow<'a, [u8]>),
 
     /// **Inline**.  [Emphasised](https://github.github.com/gfm/#emphasis-and-strong-emphasis)
     /// text.
@@ -99,10 +100,10 @@ pub enum NodeValue {
 
     /// **Inline**.  A [link](https://github.github.com/gfm/#links) to some URL, with possible
     /// title.
-    Link(NodeLink),
+    Link(NodeLink<'a>),
 
     /// **Inline**.  An [image](https://github.github.com/gfm/#images).
-    Image(NodeLink),
+    Image(NodeLink<'a>),
 }
 
 /// Alignment of a single table cell.
@@ -123,15 +124,15 @@ pub enum TableAlignment {
 
 /// The details of a link's destination, or an image's source.
 #[derive(Debug, Clone)]
-pub struct NodeLink {
+pub struct NodeLink<'a> {
     /// The URL for the link destination or image source.
-    pub url: Vec<u8>,
+    pub url: Cow<'a, [u8]>,
 
     /// The title for the link or image.
     ///
     /// Note this field is used for the `title` attribute by the HTML formatter even for images;
     /// `alt` text is supplied in the image inline text.
-    pub title: Vec<u8>,
+    pub title: Cow<'a, [u8]>,
 }
 
 /// The metadata of a list; the kind of list, the delimiter used and so on.
@@ -194,7 +195,7 @@ impl Default for ListDelimType {
 
 /// The metadata and data of a code block (fenced or indented).
 #[derive(Default, Debug, Clone)]
-pub struct NodeCodeBlock {
+pub struct NodeCodeBlock<'a> {
     /// Whether the code block is fenced.
     pub fenced: bool,
 
@@ -209,12 +210,12 @@ pub struct NodeCodeBlock {
 
     /// For fenced code blocks, the [info string](https://github.github.com/gfm/#info-string) after
     /// the opening fence, if any.
-    pub info: Vec<u8>,
+    pub info: Cow<'a, [u8]>,
 
     /// The literal contents of the code block.  As the contents are not interpreted as Markdown at
     /// all, they are contained within this structure, rather than inserted into a child inline of
     /// any kind.
-    pub literal: Vec<u8>,
+    pub literal: Cow<'a, [u8]>,
 }
 
 /// The metadata of a heading.
@@ -229,17 +230,17 @@ pub struct NodeHeading {
 
 /// The metadata of an included HTML block.
 #[derive(Debug, Clone)]
-pub struct NodeHtmlBlock {
+pub struct NodeHtmlBlock<'a> {
     #[doc(hidden)]
     pub block_type: u8,
 
     /// The literal contents of the HTML block.  Per NodeCodeBlock, the content is included here
     /// rather than in any inline.
-    pub literal: Vec<u8>,
+    pub literal: Cow<'a, [u8]>,
 }
 
 
-impl NodeValue {
+impl<'a> NodeValue<'a> {
     /// Indicates whether this node is a block node or inline node.
     pub fn block(&self) -> bool {
         match *self {
@@ -282,7 +283,7 @@ impl NodeValue {
     /// Return a reference to the text of a `Text` inline, if this node is one.
     ///
     /// Convenience method.
-    pub fn text(&self) -> Option<&Vec<u8>> {
+    pub fn text(&self) -> Option<&Cow<'a, [u8]>> {
         match *self {
             NodeValue::Text(ref t) => Some(t),
             _ => None,
@@ -292,7 +293,7 @@ impl NodeValue {
     /// Return a mutable reference to the text of a `Text` inline, if this node is one.
     ///
     /// Convenience method.
-    pub fn text_mut(&mut self) -> Option<&mut Vec<u8>> {
+    pub fn text_mut(&mut self) -> Option<&mut Cow<'a, [u8]>> {
         match *self {
             NodeValue::Text(ref mut t) => Some(t),
             _ => None,
@@ -305,9 +306,9 @@ impl NodeValue {
 /// The struct contains metadata about the node's position in the original document, and the core
 /// enum, `NodeValue`.
 #[derive(Debug, Clone)]
-pub struct Ast {
+pub struct Ast<'a> {
     /// The node value itself.
-    pub value: NodeValue,
+    pub value: NodeValue<'a>,
 
     /// The line in the input document the node starts at.
     pub start_line: u32,
@@ -322,7 +323,7 @@ pub struct Ast {
     pub end_column: usize,
 
     #[doc(hidden)]
-    pub content: Vec<u8>,
+    pub content: Cow<'a, [u8]>,
     #[doc(hidden)]
     pub open: bool,
     #[doc(hidden)]
@@ -330,10 +331,10 @@ pub struct Ast {
 }
 
 #[doc(hidden)]
-pub fn make_block(value: NodeValue, start_line: u32, start_column: usize) -> Ast {
+pub fn make_block<'a>(value: NodeValue<'a>, start_line: u32, start_column: usize) -> Ast<'a> {
     Ast {
         value: value,
-        content: vec![],
+        content: Cow::from(vec![]),
         start_line: start_line,
         start_column: start_column,
         end_line: start_line,
@@ -348,7 +349,7 @@ pub fn make_block(value: NodeValue, start_line: u32, start_column: usize) -> Ast
 /// It is bound by the lifetime `'a`, which corresponds to the `Arena` nodes are allocated in.
 /// `AstNode`s are almost handled as a reference itself bound by `'a`.  Child `Ast`s are wrapped in
 /// `RefCell` for interior mutability.
-pub type AstNode<'a> = Node<'a, RefCell<Ast>>;
+pub type AstNode<'a> = Node<'a, RefCell<Ast<'a>>>;
 
 #[doc(hidden)]
 pub fn last_child_is_open<'a>(node: &'a AstNode<'a>) -> bool {
@@ -356,7 +357,7 @@ pub fn last_child_is_open<'a>(node: &'a AstNode<'a>) -> bool {
 }
 
 #[doc(hidden)]
-pub fn can_contain_type<'a>(node: &'a AstNode<'a>, child: &NodeValue) -> bool {
+pub fn can_contain_type<'a>(node: &'a AstNode<'a>, child: &NodeValue<'a>) -> bool {
     if let NodeValue::Document = *child {
         return false;
     }

@@ -10,10 +10,13 @@ use nodes::{NodeValue, Ast, NodeCodeBlock, NodeHeading, NodeList, ListType, List
             NodeHtmlBlock, make_block, AstNode};
 use regex::bytes::Regex;
 use scanners;
+use std::borrow::Cow;
 use std::cell::RefCell;
 use std::cmp::min;
 use std::collections::HashMap;
 use std::mem;
+use std::ops::Index;
+use std::ptr;
 use std::str;
 use strings;
 use typed_arena::Arena;
@@ -26,12 +29,12 @@ const CODE_INDENT: usize = 4;
 /// See the documentation of the crate root for an example.
 pub fn parse_document<'a>(
     arena: &'a Arena<AstNode<'a>>,
-    buffer: &str,
+    buffer: &'a str,
     options: &ComrakOptions,
 ) -> &'a AstNode<'a> {
     let root: &'a AstNode<'a> = arena.alloc(Node::new(RefCell::new(Ast {
         value: NodeValue::Document,
-        content: vec![],
+        content: Cow::from(vec![]),
         start_line: 0,
         start_column: 0,
         end_line: 0,
@@ -46,7 +49,7 @@ pub fn parse_document<'a>(
 
 pub struct Parser<'a, 'o> {
     arena: &'a Arena<AstNode<'a>>,
-    refmap: HashMap<Vec<u8>, Reference>,
+    refmap: HashMap<Vec<u8>, Reference<'a>>,
     root: &'a AstNode<'a>,
     current: &'a AstNode<'a>,
     line_number: u32,
@@ -120,7 +123,7 @@ pub struct ComrakOptions {
     pub width: usize,
 
     /// Enables the
-    /// [strikethrough extension](https://github.github.com/gfm/#strikethrough-extension-)
+    /// [striket,hrough extension](https://github.github.com/gfm/#strikethrough-extension-)
     /// from the GFM spec.
     ///
     /// ```
@@ -201,9 +204,9 @@ pub struct ComrakOptions {
 
 
 #[derive(Clone)]
-pub struct Reference {
-    pub url: Vec<u8>,
-    pub title: Vec<u8>,
+pub struct Reference<'a> {
+    pub url: Cow<'a, [u8]>,
+    pub title: Cow<'a, [u8]>,
 }
 
 impl<'a, 'o> Parser<'a, 'o> {
@@ -232,7 +235,7 @@ impl<'a, 'o> Parser<'a, 'o> {
         }
     }
 
-    pub fn feed(&mut self, s: &[u8], eof: bool) {
+    pub fn feed(&mut self, s: &'a [u8], eof: bool) {
         let mut i = 0;
         let buffer = s;
         let sz = buffer.len();
@@ -264,11 +267,11 @@ impl<'a, 'o> Parser<'a, 'o> {
                 if !self.linebuf.is_empty() {
                     self.linebuf.extend_from_slice(&s[i..eol]);
                     let linebuf = mem::replace(&mut self.linebuf, Vec::with_capacity(80));
-                    self.process_line(&linebuf);
+                    self.process_line(linebuf.into());
                 } else if sz > eol && buffer[eol] == b'\n' {
-                    self.process_line(&s[i..eol + 1]);
+                    self.process_line((&s[i..eol + 1]).into());
                 } else {
-                    self.process_line(&s[i..eol]);
+                    self.process_line((&s[i..eol]).into());
                 }
             } else if eol < sz && buffer[eol] == b'\0' {
                 self.linebuf.extend_from_slice(&s[i..eol]);
@@ -323,36 +326,30 @@ impl<'a, 'o> Parser<'a, 'o> {
             strings::is_line_end_char(line[self.first_nonspace]);
     }
 
-    fn process_line(&mut self, line: &[u8]) {
-        let mut new_line: Vec<u8>;
-        let line =
-            if line.is_empty() || !strings::is_line_end_char(*line.last().unwrap()) {
-                new_line = line.into();
-                new_line.push(b'\n');
-                &new_line
-            } else {
-                line
-            };
+    fn process_line(&mut self, mut line: Cow<'a, [u8]>) {
+        if line.is_empty() || !strings::is_line_end_char(*line.last().unwrap()) {
+            line.to_mut().push(b'\n');
+        }
 
         self.offset = 0;
         self.column = 0;
         self.blank = false;
         self.partially_consumed_tab = false;
 
-        if self.line_number == 0 && line.len() >= 3 && unsafe { str::from_utf8_unchecked(line) }.chars().next().unwrap() == '\u{feff}' {
+        if self.line_number == 0 && line.len() >= 3 && unsafe { str::from_utf8_unchecked(&line) }.chars().next().unwrap() == '\u{feff}' {
             self.offset += 3;
         }
 
         self.line_number += 1;
 
         let mut all_matched = true;
-        if let Some(last_matched_container) = self.check_open_blocks(line, &mut all_matched) {
+        if let Some(last_matched_container) = self.check_open_blocks(&line, &mut all_matched) {
             let mut container = last_matched_container;
             let current = self.current;
-            self.open_new_blocks(&mut container, line, all_matched);
+            self.open_new_blocks(&mut container, &line, all_matched);
 
             if current.same_node(self.current) {
-                self.add_text_to_container(container, last_matched_container, line);
+                self.add_text_to_container(container, last_matched_container, &line);
             }
         }
 
@@ -438,7 +435,7 @@ impl<'a, 'o> Parser<'a, 'o> {
         (true, container, should_continue)
     }
 
-    fn open_new_blocks(&mut self, container: &mut &'a AstNode<'a>, line: &[u8], all_matched: bool) {
+    fn open_new_blocks(&mut self, container: &mut &'a AstNode<'a>, line: &Cow<'a, [u8]>, all_matched: bool) {
         let mut matched: usize = 0;
         let mut nl: NodeList = NodeList::default();
         let mut sc: scanners::SetextChar = scanners::SetextChar::Equals;
@@ -508,8 +505,8 @@ impl<'a, 'o> Parser<'a, 'o> {
                     fence_char: line[first_nonspace],
                     fence_length: matched,
                     fence_offset: first_nonspace - offset,
-                    info: Vec::with_capacity(10),
-                    literal: Vec::with_capacity(80),
+                    info: Cow::from(vec![]),
+                    literal: Cow::from(vec![]),
                 };
                 *container =
                     self.add_child(*container, NodeValue::CodeBlock(ncb), first_nonspace + 1);
@@ -532,7 +529,7 @@ impl<'a, 'o> Parser<'a, 'o> {
                 let offset = self.first_nonspace + 1;
                 let nhb = NodeHtmlBlock {
                     block_type: matched as u8,
-                    literal: Vec::with_capacity(10),
+                    literal: Cow::from(vec![]),
                 };
 
                 *container = self.add_child(*container, NodeValue::HtmlBlock(nhb), offset);
@@ -633,8 +630,8 @@ impl<'a, 'o> Parser<'a, 'o> {
                     fence_char: 0,
                     fence_length: 0,
                     fence_offset: 0,
-                    info: vec![],
-                    literal: Vec::with_capacity(80),
+                    info: Cow::from(vec![]),
+                    literal: Cow::from(vec![]),
                 };
                 let offset = self.offset + 1;
                 *container = self.add_child(*container, NodeValue::CodeBlock(ncb), offset);
@@ -732,7 +729,7 @@ impl<'a, 'o> Parser<'a, 'o> {
         &mut self,
         line: &[u8],
         container: &'a AstNode<'a>,
-        ast: &mut Ast,
+        ast: &mut Ast<'a>,
         should_continue: &mut bool,
     ) -> bool {
         let (fenced, fence_char, fence_length, fence_offset) = match ast.value {
@@ -795,7 +792,7 @@ impl<'a, 'o> Parser<'a, 'o> {
     fn add_child(
         &mut self,
         mut parent: &'a AstNode<'a>,
-        value: NodeValue,
+        value: NodeValue<'a>,
         start_column: usize,
     ) -> &'a AstNode<'a> {
         while !nodes::can_contain_type(parent, &value) {
@@ -812,7 +809,7 @@ impl<'a, 'o> Parser<'a, 'o> {
         &mut self,
         mut container: &'a AstNode<'a>,
         last_matched_container: &'a AstNode<'a>,
-        line: &[u8],
+        line: &Cow<'a, [u8]>,
     ) {
         self.find_first_nonspace(line);
 
@@ -884,7 +881,7 @@ impl<'a, 'o> Parser<'a, 'o> {
                     if self.blank {
                         // do nothing
                     } else if container.data.borrow().value.accepts_lines() {
-                        let mut line: Vec<u8> = line.into();
+                        let mut line: Cow<'a, [u8]> = line.clone();
                         if let NodeValue::Heading(ref nh) = container.data.borrow().value {
                             if !nh.setext {
                                 strings::chop_trailing_hashtags(&mut line);
@@ -907,25 +904,32 @@ impl<'a, 'o> Parser<'a, 'o> {
         }
     }
 
-    fn add_line(&mut self, node: &'a AstNode<'a>, line: &[u8]) {
+    fn add_line(&mut self, node: &'a AstNode<'a>, line: &Cow<'a, [u8]>) {
+        // TODO: this entire thing needs to be smarter???
+        // TODO: this is always copying and we wanna avoid that.
+
         let mut ast = node.data.borrow_mut();
         assert!(ast.open);
         if self.partially_consumed_tab {
             self.offset += 1;
             let chars_to_tab = TAB_STOP - (self.column % TAB_STOP);
             for _ in 0..chars_to_tab {
-                ast.content.push(b' ');
+                ast.content.to_mut().push(b' ');
             }
         }
         if self.offset < line.len() {
-            ast.content.extend_from_slice(&line[self.offset..]);
+            if ast.content.len() == 0 {
+                ast.content = cow_range(line, self.offset..);
+            } else {
+                cow_append(&mut ast.content, &line[self.offset..]);
+            }
         }
     }
 
     pub fn finish(&mut self) -> &'a AstNode<'a> {
         if !self.linebuf.is_empty() {
             let linebuf = mem::replace(&mut self.linebuf, vec![]);
-            self.process_line(&linebuf);
+            self.process_line(linebuf.into());
         }
 
         self.finalize_document();
@@ -949,7 +953,7 @@ impl<'a, 'o> Parser<'a, 'o> {
     fn finalize_borrowed(
         &mut self,
         node: &'a AstNode<'a>,
-        ast: &mut Ast,
+        ast: &mut Ast<'a>,
     ) -> Option<&'a AstNode<'a>> {
         assert!(ast.open);
         ast.open = false;
@@ -989,7 +993,7 @@ impl<'a, 'o> Parser<'a, 'o> {
                 {
                     while pos > 0 {
                         // TODO
-                        content.remove(0);
+                        content.to_mut().remove(0);
                         pos -= 1;
                     }
                 }
@@ -999,8 +1003,9 @@ impl<'a, 'o> Parser<'a, 'o> {
             }
             NodeValue::CodeBlock(ref mut ncb) => {
                 if !ncb.fenced {
+                    // TODO: this will always cause a copy. we should avoid if possible.
                     strings::remove_trailing_blank_lines(content);
-                    content.push(b'\n');
+                    content.to_mut().push(b'\n');
                 } else {
                     let mut pos = 0;
                     while pos < content.len() {
@@ -1011,7 +1016,7 @@ impl<'a, 'o> Parser<'a, 'o> {
                     }
                     assert!(pos < content.len());
 
-                    let mut tmp = entity::unescape_html(&content[..pos]);
+                    let mut tmp = entity::unescape_html(&cow_range(content, ..pos));
                     strings::trim(&mut tmp);
                     strings::unescape(&mut tmp);
                     ncb.info = tmp;
@@ -1025,16 +1030,16 @@ impl<'a, 'o> Parser<'a, 'o> {
 
                     // TODO
                     while pos > 0 {
-                        content.remove(0);
+                        content.to_mut().remove(0);
                         pos -= 1;
                     }
                 }
                 mem::swap(&mut ncb.literal, content);
-                content.clear();
+                content.to_mut().clear();
             }
             NodeValue::HtmlBlock(ref mut nhb) => {
                 mem::swap(&mut nhb.literal, content);
-                content.clear();
+                content.to_mut().clear();
             }
             NodeValue::List(ref mut nl) => {
                 nl.tight = true;
@@ -1087,7 +1092,8 @@ impl<'a, 'o> Parser<'a, 'o> {
     fn parse_inlines(&mut self, node: &'a AstNode<'a>) {
         let delimiter_arena = Arena::new();
         let node_data = node.data.borrow();
-        let content = strings::rtrim_slice(&node_data.content);
+        let mut content = node_data.content.clone();
+        strings::rtrim(&mut content);
         let mut subj = inlines::Subject::new(
             self.arena,
             self.options,
@@ -1121,7 +1127,7 @@ impl<'a, 'o> Parser<'a, 'o> {
 
                         match ns.data.borrow().value {
                             NodeValue::Text(ref adj) => {
-                                root.extend_from_slice(adj);
+                                root.to_mut().extend_from_slice(adj);
                                 ns.detach();
                             }
                             _ => {
@@ -1147,7 +1153,7 @@ impl<'a, 'o> Parser<'a, 'o> {
         }
     }
 
-    fn postprocess_text_node(&mut self, node: &'a AstNode<'a>, text: &mut Vec<u8>) {
+    fn postprocess_text_node(&mut self, node: &'a AstNode<'a>, text: &mut Cow<'a, [u8]>) {
         if self.options.ext_tasklist {
             self.process_tasklist(node, text);
         }
@@ -1158,7 +1164,7 @@ impl<'a, 'o> Parser<'a, 'o> {
 
     }
 
-    fn process_tasklist(&mut self, node: &'a AstNode<'a>, text: &mut Vec<u8>) {
+    fn process_tasklist(&mut self, node: &'a AstNode<'a>, text: &mut Cow<'a, [u8]>) {
         lazy_static! {
             static ref TASKLIST: Regex = Regex::new(r"\A(\s*\[([xX ])\])(?:\z|\s)").unwrap();
         }
@@ -1183,26 +1189,26 @@ impl<'a, 'o> Parser<'a, 'o> {
             _ => return,
         }
 
-        *text = text[end..].to_vec();
+        *text = text[end..].to_vec().into();
         let checkbox = inlines::make_inline(
             self.arena,
             NodeValue::HtmlInline(
                 if active {
-                    b"<input type=\"checkbox\" disabled=\"\" checked=\"\" />".to_vec()
+                    b"<input type=\"checkbox\" disabled=\"\" checked=\"\" />".to_vec().into()
                 } else {
-                    b"<input type=\"checkbox\" disabled=\"\" />".to_vec()
+                    b"<input type=\"checkbox\" disabled=\"\" />".to_vec().into()
                 }
             ),
         );
         node.insert_before(checkbox);
     }
 
-    fn parse_reference_inline(&mut self, content: &[u8]) -> Option<usize> {
+    fn parse_reference_inline(&mut self, content: &Cow<'a, [u8]>) -> Option<usize> {
         let delimiter_arena = Arena::new();
         let mut subj = inlines::Subject::new(
             self.arena,
             self.options,
-            content,
+            content.clone(),
             &mut self.refmap,
             &delimiter_arena,
         );
@@ -1222,20 +1228,20 @@ impl<'a, 'o> Parser<'a, 'o> {
             Some(matchlen) => matchlen,
             None => return None,
         };
-        let url = subj.input[subj.pos..subj.pos + matchlen].to_vec();
+        let url = cow_range(&subj.input, subj.pos..subj.pos + matchlen);
         subj.pos += matchlen;
 
         let beforetitle = subj.pos;
         subj.spnl();
         let title = match scanners::link_title(&subj.input[subj.pos..]) {
             Some(matchlen) => {
-                let t = &subj.input[subj.pos..subj.pos + matchlen];
+                let t = cow_range(&subj.input, subj.pos..subj.pos + matchlen);
                 subj.pos += matchlen;
-                t.to_vec()
+                t
             }
             _ => {
                 subj.pos = beforetitle;
-                vec![]
+                Cow::from(vec![])
             }
         };
 
@@ -1405,4 +1411,18 @@ fn lists_match(list_data: &NodeList, item_data: &NodeList) -> bool {
 pub enum AutolinkType {
     URI,
     Email,
+}
+
+pub fn cow_range<'a, T, R>(cow: &Cow<'a, [T]>, range: R) -> Cow<'a, [T]>
+    where T : Clone, [T] : Index<R, Output=[T]>, Vec<T> : Index<R, Output=[T]> {
+    match *cow {
+        Cow::Borrowed(p) => Cow::from(&p[range]),
+        Cow::Owned(ref o) => Cow::from(o[range].to_vec()),
+    }
+}
+
+fn cow_append<'a, T>(cow: &mut Cow<'a, [T]>, data: &[T])
+    where T : Clone {
+    // TODO: we could optimise this.
+    cow.to_mut().extend_from_slice(data);
 }

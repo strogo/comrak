@@ -1,14 +1,16 @@
 use ctype::{isspace, isalpha, isalnum};
 use nodes::{NodeValue, NodeLink, AstNode};
+use parser::cow_range;
 use parser::inlines::make_inline;
 use typed_arena::Arena;
 use unicode_categories::UnicodeCategories;
+use std::borrow::Cow;
 use std::str;
 
 pub fn process_autolinks<'a>(
     arena: &'a Arena<AstNode<'a>>,
     node: &'a AstNode<'a>,
-    contents: &mut Vec<u8>,
+    contents: &mut Cow<'a, [u8]>,
 ) {
     let len = contents.len();
     let mut i = 0;
@@ -47,9 +49,9 @@ pub fn process_autolinks<'a>(
             if i + skip < len {
                 let remain = contents[i + skip..].to_vec();
                 assert!(!remain.is_empty());
-                post.insert_after(make_inline(arena, NodeValue::Text(remain)));
+                post.insert_after(make_inline(arena, NodeValue::Text(remain.into())));
             }
-            contents.truncate(i);
+            contents.to_mut().truncate(i);
             return;
         }
     }
@@ -96,14 +98,14 @@ fn www_match<'a>(
     let inl = make_inline(
         arena,
         NodeValue::Link(NodeLink {
-            url: url,
-            title: vec![],
+            url: url.into(),
+            title: Cow::from(vec![]),
         }),
     );
 
     inl.append(make_inline(
         arena,
-        NodeValue::Text(contents[i..link_end + i].to_vec()),
+        NodeValue::Text(contents[i..link_end + i].to_vec().into()),
     ));
     Some((inl, 0, link_end))
 }
@@ -202,7 +204,7 @@ fn autolink_delim(data: &[u8], mut link_end: usize) -> usize {
 
 fn url_match<'a>(
     arena: &'a Arena<AstNode<'a>>,
-    contents: &[u8],
+    contents: &Cow<'a, [u8]>,
     i: usize,
 ) -> Option<(&'a AstNode<'a>, usize, usize)> {
     lazy_static! {
@@ -237,12 +239,12 @@ fn url_match<'a>(
 
     link_end = autolink_delim(&contents[i..], link_end);
 
-    let url = contents[i - rewind..i + link_end].to_vec();
+    let url = cow_range(contents, i - rewind..i + link_end);
     let inl = make_inline(
         arena,
         NodeValue::Link(NodeLink {
             url: url.clone(),
-            title: vec![],
+            title: Cow::from(vec![]),
         }),
     );
 
@@ -324,15 +326,15 @@ fn email_match<'a>(
     let inl = make_inline(
         arena,
         NodeValue::Link(NodeLink {
-            url: url,
-            title: vec![],
+            url: url.into(),
+            title: Cow::from(vec![]),
         }),
     );
 
     inl.append(make_inline(
         arena,
         NodeValue::Text(
-            contents[i - rewind..link_end + i].to_vec(),
+            contents[i - rewind..link_end + i].to_vec().into(),
         ),
     ));
     Some((inl, rewind, rewind + link_end))
