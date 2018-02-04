@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `ComrakOptions` struct in crate `comrak`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ComrakOptions">
+
+    <title>comrak::ComrakOptions - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Struct ComrakOptions</p><div class="block items"><a class="sidebar-title" href="#fields">Fields</a><div class="sidebar-links"><a href="#structfield.hardbreaks">hardbreaks</a><a href="#structfield.github_pre_lang">github_pre_lang</a><a href="#structfield.width">width</a><a href="#structfield.default_info_string">default_info_string</a><a href="#structfield.ext_strikethrough">ext_strikethrough</a><a href="#structfield.ext_tagfilter">ext_tagfilter</a><a href="#structfield.ext_table">ext_table</a><a href="#structfield.ext_autolink">ext_autolink</a><a href="#structfield.ext_tasklist">ext_tasklist</a><a href="#structfield.ext_superscript">ext_superscript</a><a href="#structfield.ext_header_ids">ext_header_ids</a><a href="#structfield.ext_footnotes">ext_footnotes</a></div><a class="sidebar-title" href="#implementations">Trait Implementations</a><div class="sidebar-links"><a href="#impl-Default">Default</a><a href="#impl-Debug">Debug</a><a href="#impl-Clone">Clone</a></div></div><p class='location'><a href='index.html'>comrak</a></p><script>window.sidebarCurrent = {name: 'ComrakOptions', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>comrak</a>::<wbr><a class="struct" href=''>ComrakOptions</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/comrak/parser/mod.rs.html#68-255' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct ComrakOptions {
+    pub hardbreaks: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    pub github_pre_lang: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    pub width: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
+    pub default_info_string: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>&gt;,
+    pub ext_strikethrough: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    pub ext_tagfilter: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    pub ext_table: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    pub ext_autolink: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    pub ext_tasklist: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    pub ext_superscript: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    pub ext_header_ids: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>&gt;,
+    pub ext_footnotes: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+}</pre><div class='docblock'><p>Options for both parser and formatter functions.</p>
+</div><h2 id='fields' class='fields small-section-header'>
+                       Fields<a href='#fields' class='anchor'></a></h2><span id="structfield.hardbreaks" class="structfield small-section-header">
+                           <a href="#structfield.hardbreaks" class="anchor field"></a>
+                           <span id="hardbreaks.v" class='invisible'>
+                           <code>hardbreaks: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code>
+                           </span></span><div class='docblock'><p><a href="http://spec.commonmark.org/0.27/#soft-line-breaks">Soft line breaks</a> in the input
+translate into hard line breaks in the output.</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">ComrakOptions</span>::<span class="ident">default</span>();
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">markdown_to_html</span>(<span class="string">&quot;Hello.\nWorld.\n&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>),
+           <span class="string">&quot;&lt;p&gt;Hello.\nWorld.&lt;/p&gt;\n&quot;</span>);
+
+<span class="ident">options</span>.<span class="ident">hardbreaks</span> <span class="op">=</span> <span class="bool-val">true</span>;
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">markdown_to_html</span>(<span class="string">&quot;Hello.\nWorld.\n&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>),
+           <span class="string">&quot;&lt;p&gt;Hello.&lt;br /&gt;\nWorld.&lt;/p&gt;\n&quot;</span>);</pre>
+</div><span id="structfield.github_pre_lang" class="structfield small-section-header">
+                           <a href="#structfield.github_pre_lang" class="anchor field"></a>
+                           <span id="github_pre_lang.v" class='invisible'>
+                           <code>github_pre_lang: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code>
+                           </span></span><div class='docblock'><p>GitHub-style <code>&lt;pre lang=&quot;xyz&quot;&gt;</code> is used for fenced code blocks with info tags.</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">ComrakOptions</span>::<span class="ident">default</span>();
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">markdown_to_html</span>(<span class="string">&quot;``` rust\nfn hello();\n```\n&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>),
+           <span class="string">&quot;&lt;pre&gt;&lt;code class=\&quot;language-rust\&quot;&gt;fn hello();\n&lt;/code&gt;&lt;/pre&gt;\n&quot;</span>);
+
+<span class="ident">options</span>.<span class="ident">github_pre_lang</span> <span class="op">=</span> <span class="bool-val">true</span>;
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">markdown_to_html</span>(<span class="string">&quot;``` rust\nfn hello();\n```\n&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>),
+           <span class="string">&quot;&lt;pre lang=\&quot;rust\&quot;&gt;&lt;code&gt;fn hello();\n&lt;/code&gt;&lt;/pre&gt;\n&quot;</span>);</pre>
+</div><span id="structfield.width" class="structfield small-section-header">
+                           <a href="#structfield.width" class="anchor field"></a>
+                           <span id="width.v" class='invisible'>
+                           <code>width: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a></code>
+                           </span></span><div class='docblock'><p>The wrap column when outputting CommonMark.</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">ComrakOptions</span>::<span class="ident">default</span>();
+<span class="kw">let</span> <span class="ident">node</span> <span class="op">=</span> <span class="ident">parse_document</span>(<span class="kw-2">&amp;</span><span class="ident">arena</span>, <span class="string">&quot;hello hello hello hello hello hello&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>);
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
+<span class="ident">format_commonmark</span>(<span class="ident">node</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">output</span>).<span class="ident">unwrap</span>();
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">String</span>::<span class="ident">from_utf8</span>(<span class="ident">output</span>).<span class="ident">unwrap</span>(),
+           <span class="string">&quot;hello hello hello hello hello hello\n&quot;</span>);
+
+<span class="ident">options</span>.<span class="ident">width</span> <span class="op">=</span> <span class="number">20</span>;
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
+<span class="ident">format_commonmark</span>(<span class="ident">node</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">output</span>).<span class="ident">unwrap</span>();
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">String</span>::<span class="ident">from_utf8</span>(<span class="ident">output</span>).<span class="ident">unwrap</span>(),
+           <span class="string">&quot;hello hello hello\nhello hello hello\n&quot;</span>);</pre>
+</div><span id="structfield.default_info_string" class="structfield small-section-header">
+                           <a href="#structfield.default_info_string" class="anchor field"></a>
+                           <span id="default_info_string.v" class='invisible'>
+                           <code>default_info_string: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>&gt;</code>
+                           </span></span><div class='docblock'><p>The default info string for fenced code blocks.</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">ComrakOptions</span>::<span class="ident">default</span>();
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">markdown_to_html</span>(<span class="string">&quot;```\nfn hello();\n```\n&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>),
+           <span class="string">&quot;&lt;pre&gt;&lt;code&gt;fn hello();\n&lt;/code&gt;&lt;/pre&gt;\n&quot;</span>);
+
+<span class="ident">options</span>.<span class="ident">default_info_string</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="string">&quot;rust&quot;</span>.<span class="ident">into</span>());
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">markdown_to_html</span>(<span class="string">&quot;```\nfn hello();\n```\n&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>),
+           <span class="string">&quot;&lt;pre&gt;&lt;code class=\&quot;language-rust\&quot;&gt;fn hello();\n&lt;/code&gt;&lt;/pre&gt;\n&quot;</span>);</pre>
+</div><span id="structfield.ext_strikethrough" class="structfield small-section-header">
+                           <a href="#structfield.ext_strikethrough" class="anchor field"></a>
+                           <span id="ext_strikethrough.v" class='invisible'>
+                           <code>ext_strikethrough: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code>
+                           </span></span><div class='docblock'><p>Enables the
+<a href="https://github.github.com/gfm/#strikethrough-extension-">strikethrough extension</a>
+from the GFM spec.</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">ComrakOptions</span> {
+  <span class="ident">ext_strikethrough</span>: <span class="bool-val">true</span>,
+  ..<span class="ident">ComrakOptions</span>::<span class="ident">default</span>()
+};
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">markdown_to_html</span>(<span class="string">&quot;Hello ~world~ there.\n&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>),
+           <span class="string">&quot;&lt;p&gt;Hello &lt;del&gt;world&lt;/del&gt; there.&lt;/p&gt;\n&quot;</span>);</pre>
+</div><span id="structfield.ext_tagfilter" class="structfield small-section-header">
+                           <a href="#structfield.ext_tagfilter" class="anchor field"></a>
+                           <span id="ext_tagfilter.v" class='invisible'>
+                           <code>ext_tagfilter: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code>
+                           </span></span><div class='docblock'><p>Enables the
+<a href="https://github.github.com/gfm/#disallowed-raw-html-extension-">tagfilter extension</a>
+from the GFM spec.</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">ComrakOptions</span> {
+  <span class="ident">ext_tagfilter</span>: <span class="bool-val">true</span>,
+  ..<span class="ident">ComrakOptions</span>::<span class="ident">default</span>()
+};
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">markdown_to_html</span>(<span class="string">&quot;Hello &lt;xmp&gt;.\n\n&lt;xmp&gt;&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>),
+           <span class="string">&quot;&lt;p&gt;Hello &amp;lt;xmp&gt;.&lt;/p&gt;\n&amp;lt;xmp&gt;\n&quot;</span>);</pre>
+</div><span id="structfield.ext_table" class="structfield small-section-header">
+                           <a href="#structfield.ext_table" class="anchor field"></a>
+                           <span id="ext_table.v" class='invisible'>
+                           <code>ext_table: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code>
+                           </span></span><div class='docblock'><p>Enables the <a href="https://github.github.com/gfm/#tables-extension-">table extension</a>
+from the GFM spec.</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">ComrakOptions</span> {
+  <span class="ident">ext_table</span>: <span class="bool-val">true</span>,
+  ..<span class="ident">ComrakOptions</span>::<span class="ident">default</span>()
+};
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">markdown_to_html</span>(<span class="string">&quot;| a | b |\n|---|---|\n| c | d |\n&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>),
+           <span class="string">&quot;&lt;table&gt;\n&lt;thead&gt;\n&lt;tr&gt;\n&lt;th&gt;a&lt;/th&gt;\n&lt;th&gt;b&lt;/th&gt;\n&lt;/tr&gt;\n&lt;/thead&gt;\n\
+            &lt;tbody&gt;\n&lt;tr&gt;\n&lt;td&gt;c&lt;/td&gt;\n&lt;td&gt;d&lt;/td&gt;\n&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;\n&quot;</span>);</pre>
+</div><span id="structfield.ext_autolink" class="structfield small-section-header">
+                           <a href="#structfield.ext_autolink" class="anchor field"></a>
+                           <span id="ext_autolink.v" class='invisible'>
+                           <code>ext_autolink: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code>
+                           </span></span><div class='docblock'><p>Enables the <a href="https://github.github.com/gfm/#autolinks-extension-">autolink extension</a>
+from the GFM spec.</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">ComrakOptions</span> {
+  <span class="ident">ext_autolink</span>: <span class="bool-val">true</span>,
+  ..<span class="ident">ComrakOptions</span>::<span class="ident">default</span>()
+};
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">markdown_to_html</span>(<span class="string">&quot;Hello www.github.com.\n&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>),
+           <span class="string">&quot;&lt;p&gt;Hello &lt;a href=\&quot;http://www.github.com\&quot;&gt;www.github.com&lt;/a&gt;.&lt;/p&gt;\n&quot;</span>);</pre>
+</div><span id="structfield.ext_tasklist" class="structfield small-section-header">
+                           <a href="#structfield.ext_tasklist" class="anchor field"></a>
+                           <span id="ext_tasklist.v" class='invisible'>
+                           <code>ext_tasklist: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code>
+                           </span></span><div class='docblock'><p>Enables the
+<a href="https://github.github.com/gfm/#task-list-items-extension-">task list items extension</a>
+from the GFM spec.</p>
+
+<p>Note that the spec does not define the precise output, so only the bare essentials are
+rendered.</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">ComrakOptions</span> {
+  <span class="ident">ext_tasklist</span>: <span class="bool-val">true</span>,
+  ..<span class="ident">ComrakOptions</span>::<span class="ident">default</span>()
+};
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">markdown_to_html</span>(<span class="string">&quot;* [x] Done\n* [ ] Not done\n&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>),
+           <span class="string">&quot;&lt;ul&gt;\n&lt;li&gt;&lt;input type=\&quot;checkbox\&quot; disabled=\&quot;\&quot; checked=\&quot;\&quot; /&gt; Done&lt;/li&gt;\n\
+           &lt;li&gt;&lt;input type=\&quot;checkbox\&quot; disabled=\&quot;\&quot; /&gt; Not done&lt;/li&gt;\n&lt;/ul&gt;\n&quot;</span>);</pre>
+</div><span id="structfield.ext_superscript" class="structfield small-section-header">
+                           <a href="#structfield.ext_superscript" class="anchor field"></a>
+                           <span id="ext_superscript.v" class='invisible'>
+                           <code>ext_superscript: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code>
+                           </span></span><div class='docblock'><p>Enables the superscript Comrak extension.</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">ComrakOptions</span> {
+  <span class="ident">ext_superscript</span>: <span class="bool-val">true</span>,
+  ..<span class="ident">ComrakOptions</span>::<span class="ident">default</span>()
+};
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">markdown_to_html</span>(<span class="string">&quot;e = mc^2^.\n&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>),
+           <span class="string">&quot;&lt;p&gt;e = mc&lt;sup&gt;2&lt;/sup&gt;.&lt;/p&gt;\n&quot;</span>);</pre>
+</div><span id="structfield.ext_header_ids" class="structfield small-section-header">
+                           <a href="#structfield.ext_header_ids" class="anchor field"></a>
+                           <span id="ext_header_ids.v" class='invisible'>
+                           <code>ext_header_ids: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>&gt;</code>
+                           </span></span><div class='docblock'><p>Enables the header IDs Comrak extension.</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">ComrakOptions</span> {
+  <span class="ident">ext_header_ids</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;user-content-&quot;</span>.<span class="ident">to_string</span>()),
+  ..<span class="ident">ComrakOptions</span>::<span class="ident">default</span>()
+};
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">markdown_to_html</span>(<span class="string">&quot;# README\n&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>),
+           <span class="string">&quot;&lt;h1&gt;&lt;a href=\&quot;#readme\&quot; aria-hidden=\&quot;true\&quot; class=\&quot;anchor\&quot; id=\&quot;user-content-readme\&quot;&gt;&lt;/a&gt;README&lt;/h1&gt;\n&quot;</span>);</pre>
+</div><span id="structfield.ext_footnotes" class="structfield small-section-header">
+                           <a href="#structfield.ext_footnotes" class="anchor field"></a>
+                           <span id="ext_footnotes.v" class='invisible'>
+                           <code>ext_footnotes: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code>
+                           </span></span><div class='docblock'><p>Enables the footnotes extension per <code>cmark-gfm</code>.</p>
+
+<p>For usage, see <code>src/tests.rs</code>.  The extension is modelled after
+<a href="https://kramdown.gettalong.org/syntax.html#footnotes">Kramdown</a>.</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">ComrakOptions</span> {
+  <span class="ident">ext_footnotes</span>: <span class="bool-val">true</span>,
+  ..<span class="ident">ComrakOptions</span>::<span class="ident">default</span>()
+};
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">markdown_to_html</span>(<span class="string">&quot;Hi[^x].\n\n[^x]: A greeting.\n&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">options</span>),
+           <span class="string">&quot;&lt;p&gt;Hi&lt;sup class=\&quot;footnote-ref\&quot;&gt;&lt;a href=\&quot;#fn1\&quot; id=\&quot;fnref1\&quot;&gt;[1]&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;\n&lt;section class=\&quot;footnotes\&quot;&gt;\n&lt;ol&gt;\n&lt;li id=\&quot;fn1\&quot;&gt;\n&lt;p&gt;A greeting. &lt;a href=\&quot;#fnref1\&quot; class=\&quot;footnote-backref\&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;\n&lt;/li&gt;\n&lt;/ol&gt;\n&lt;/section&gt;\n&quot;</span>);</pre>
+</div>
+            <h2 id='implementations' class='small-section-header'>
+              Trait Implementations<a href='#implementations' class='anchor'></a>
+            </h2>
+        <h3 id='impl-Default' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html" title="trait core::default::Default">Default</a> for <a class="struct" href="../comrak/struct.ComrakOptions.html" title="struct comrak::ComrakOptions">ComrakOptions</a></code><a href='#impl-Default' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/comrak/parser/mod.rs.html#66' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.default' class="method"><span id='default.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default' class='fnname'>default</a>() -&gt; <a class="struct" href="../comrak/struct.ComrakOptions.html" title="struct comrak::ComrakOptions">ComrakOptions</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/comrak/parser/mod.rs.html#66' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the &quot;default value&quot; for a type. <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Read more</a></p>
+</div></div><h3 id='impl-Debug' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="struct" href="../comrak/struct.ComrakOptions.html" title="struct comrak::ComrakOptions">ComrakOptions</a></code><a href='#impl-Debug' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/comrak/parser/mod.rs.html#66' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class="method"><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html" title="type core::fmt::Result">Result</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/comrak/parser/mod.rs.html#66' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter. <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt">Read more</a></p>
+</div></div><h3 id='impl-Clone' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../comrak/struct.ComrakOptions.html" title="struct comrak::ComrakOptions">ComrakOptions</a></code><a href='#impl-Clone' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/comrak/parser/mod.rs.html#66' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class="method"><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class="struct" href="../comrak/struct.ComrakOptions.html" title="struct comrak::ComrakOptions">ComrakOptions</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/comrak/parser/mod.rs.html#66' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class="method"><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Self)</code></span><span class='out-of-band'><div class='ghost'></div><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div><a class='srclink' href='https://doc.rust-lang.org/nightly/src/core/clone.rs.html#112-114' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>↑</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>↓</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>↹</dt>
+                    <dd>Switch tab</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt style="width:31px;">+ / -</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "comrak";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>
