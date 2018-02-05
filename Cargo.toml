@@ -30,8 +30,8 @@ entities = "1.0"
 unicode_categories = "0.1"
 clap = { version = "2.29", optional = true }
 twoway = "0.1"
-pest = "1.0"
-pest_derive = "1.0"
+pest = { git = "https://github.com/dragostis/pest", branch = "v1.1" }
+pest_derive = { git = "https://github.com/dragostis/pest", branch = "v1.1" }
 
 [features]
 default = ["clap"]
