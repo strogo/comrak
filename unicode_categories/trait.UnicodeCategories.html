@@ -10,8 +10,11 @@
     <title>unicode_categories::UnicodeCategories - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../normalize.css">
-    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+    
+    <link rel="stylesheet" type="text/css" href="../dark.css">
+    <link rel="stylesheet" type="text/css" href="../main.css" id="themeStyle">
+    <script src="../storage.js"></script>
     
 
     
@@ -28,10 +31,18 @@
     
 
     <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
         
-        <p class='location'>Trait UnicodeCategories</p><div class="block items"><a class="sidebar-title" href="#required-methods">Required Methods</a><div class="sidebar-links"><a href="#tymethod.is_other_control">is_other_control</a><a href="#tymethod.is_other_format">is_other_format</a><a href="#tymethod.is_other_private_use">is_other_private_use</a><a href="#tymethod.is_letter_lowercase">is_letter_lowercase</a><a href="#tymethod.is_letter_modifier">is_letter_modifier</a><a href="#tymethod.is_letter_other">is_letter_other</a><a href="#tymethod.is_letter_titlecase">is_letter_titlecase</a><a href="#tymethod.is_letter_uppercase">is_letter_uppercase</a><a href="#tymethod.is_mark_spacing_combining">is_mark_spacing_combining</a><a href="#tymethod.is_mark_enclosing">is_mark_enclosing</a><a href="#tymethod.is_mark_nonspacing">is_mark_nonspacing</a><a href="#tymethod.is_number_decimal_digit">is_number_decimal_digit</a><a href="#tymethod.is_number_letter">is_number_letter</a><a href="#tymethod.is_number_other">is_number_other</a><a href="#tymethod.is_punctuation_connector">is_punctuation_connector</a><a href="#tymethod.is_punctuation_dash">is_punctuation_dash</a><a href="#tymethod.is_punctuation_close">is_punctuation_close</a><a href="#tymethod.is_punctuation_final_quote">is_punctuation_final_quote</a><a href="#tymethod.is_punctuation_initial_quote">is_punctuation_initial_quote</a><a href="#tymethod.is_punctuation_other">is_punctuation_other</a><a href="#tymethod.is_punctuation_open">is_punctuation_open</a><a href="#tymethod.is_symbol_currency">is_symbol_currency</a><a href="#tymethod.is_symbol_modifier">is_symbol_modifier</a><a href="#tymethod.is_symbol_math">is_symbol_math</a><a href="#tymethod.is_symbol_other">is_symbol_other</a><a href="#tymethod.is_separator_line">is_separator_line</a><a href="#tymethod.is_separator_paragraph">is_separator_paragraph</a><a href="#tymethod.is_separator_space">is_separator_space</a></div><a class="sidebar-title" href="#provided-methods">Provided Methods</a><div class="sidebar-links"><a href="#method.is_other">is_other</a><a href="#method.is_letter">is_letter</a><a href="#method.is_mark">is_mark</a><a href="#method.is_number">is_number</a><a href="#method.is_punctuation">is_punctuation</a><a href="#method.is_symbol">is_symbol</a><a href="#method.is_separator">is_separator</a></div><a class="sidebar-title" href="#foreign-impls">Implementations on Foreign Types</a><div class="sidebar-links"><a href="#impl-UnicodeCategories">char</a></div><a class="sidebar-title" href="#implementors">Implementors</a></div><p class='location'><a href='index.html'>unicode_categories</a></p><script>window.sidebarCurrent = {name: 'UnicodeCategories', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'>Trait UnicodeCategories</p><div class="sidebar-elems"><div class="block items"><a class="sidebar-title" href="#required-methods">Required Methods</a><div class="sidebar-links"><a href="#tymethod.is_other_control">is_other_control</a><a href="#tymethod.is_other_format">is_other_format</a><a href="#tymethod.is_other_private_use">is_other_private_use</a><a href="#tymethod.is_letter_lowercase">is_letter_lowercase</a><a href="#tymethod.is_letter_modifier">is_letter_modifier</a><a href="#tymethod.is_letter_other">is_letter_other</a><a href="#tymethod.is_letter_titlecase">is_letter_titlecase</a><a href="#tymethod.is_letter_uppercase">is_letter_uppercase</a><a href="#tymethod.is_mark_spacing_combining">is_mark_spacing_combining</a><a href="#tymethod.is_mark_enclosing">is_mark_enclosing</a><a href="#tymethod.is_mark_nonspacing">is_mark_nonspacing</a><a href="#tymethod.is_number_decimal_digit">is_number_decimal_digit</a><a href="#tymethod.is_number_letter">is_number_letter</a><a href="#tymethod.is_number_other">is_number_other</a><a href="#tymethod.is_punctuation_connector">is_punctuation_connector</a><a href="#tymethod.is_punctuation_dash">is_punctuation_dash</a><a href="#tymethod.is_punctuation_close">is_punctuation_close</a><a href="#tymethod.is_punctuation_final_quote">is_punctuation_final_quote</a><a href="#tymethod.is_punctuation_initial_quote">is_punctuation_initial_quote</a><a href="#tymethod.is_punctuation_other">is_punctuation_other</a><a href="#tymethod.is_punctuation_open">is_punctuation_open</a><a href="#tymethod.is_symbol_currency">is_symbol_currency</a><a href="#tymethod.is_symbol_modifier">is_symbol_modifier</a><a href="#tymethod.is_symbol_math">is_symbol_math</a><a href="#tymethod.is_symbol_other">is_symbol_other</a><a href="#tymethod.is_separator_line">is_separator_line</a><a href="#tymethod.is_separator_paragraph">is_separator_paragraph</a><a href="#tymethod.is_separator_space">is_separator_space</a></div><a class="sidebar-title" href="#provided-methods">Provided Methods</a><div class="sidebar-links"><a href="#method.is_other">is_other</a><a href="#method.is_letter">is_letter</a><a href="#method.is_mark">is_mark</a><a href="#method.is_number">is_number</a><a href="#method.is_punctuation">is_punctuation</a><a href="#method.is_symbol">is_symbol</a><a href="#method.is_separator">is_separator</a></div><a class="sidebar-title" href="#foreign-impls">Implementations on Foreign Types</a><div class="sidebar-links"><a href="#impl-UnicodeCategories">char</a></div><a class="sidebar-title" href="#implementors">Implementors</a></div><p class='location'><a href='index.html'>unicode_categories</a></p><script>window.sidebarCurrent = {name: 'UnicodeCategories', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script></div>
     </nav>
 
+    <div class="theme-picker">
+        <button id="theme-picker" aria-label="Pick another theme!">
+            <img src="../brush.svg" width="18" alt="Pick another theme!">
+        </button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
     <nav class="sub">
         <form class="search-form js-only">
             <div class="search-container">
@@ -228,20 +239,22 @@ a &quot;Letter&quot; category: Lc, Ll, Lm, Lo, Lt, or Lu.</p>
                 <h2>Keyboard Shortcuts</h2>
 
                 <dl>
-                    <dt>?</dt>
+                    <dt><kbd>?</kbd></dt>
                     <dd>Show this help dialog</dd>
-                    <dt>S</dt>
+                    <dt><kbd>S</kbd></dt>
                     <dd>Focus the search field</dd>
-                    <dt>↑</dt>
+                    <dt><kbd>↑</kbd></dt>
                     <dd>Move up in search results</dd>
-                    <dt>↓</dt>
+                    <dt><kbd>↓</kbd></dt>
                     <dd>Move down in search results</dd>
-                    <dt>↹</dt>
+                    <dt><kbd>↹</kbd></dt>
                     <dd>Switch tab</dd>
-                    <dt>&#9166;</dt>
+                    <dt><kbd>&#9166;</kbd></dt>
                     <dd>Go to active search result</dd>
-                    <dt style="width:31px;">+ / -</dt>
-                    <dd>Collapse/expand all sections</dd>
+                    <dt><kbd>+</kbd></dt>
+                    <dd>Expand all sections</dd>
+                    <dt><kbd>-</kbd></dt>
+                    <dd>Collapse all sections</dd>
                 </dl>
             </div>
 

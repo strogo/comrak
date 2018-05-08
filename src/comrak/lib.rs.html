@@ -10,8 +10,11 @@
     <title>lib.rs.html -- source</title>
 
     <link rel="stylesheet" type="text/css" href="../../normalize.css">
-    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../../main.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle">
+    
+    <link rel="stylesheet" type="text/css" href="../../dark.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css" id="themeStyle">
+    <script src="../../storage.js"></script>
     
 
     
@@ -28,10 +31,18 @@
     
 
     <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
         
         
     </nav>
 
+    <div class="theme-picker">
+        <button id="theme-picker" aria-label="Pick another theme!">
+            <img src="../../brush.svg" width="18" alt="Pick another theme!">
+        </button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../../theme.js"></script>
     <nav class="sub">
         <form class="search-form js-only">
             <div class="search-container">
@@ -150,6 +161,9 @@
 <span id="105">105</span>
 <span id="106">106</span>
 <span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
 </pre><pre class="rust ">
 <span class="doccomment">//! A 100% [CommonMark](http://commonmark.org/) and [GFM](https://github.github.com/gfm/)</span>
 <span class="doccomment">//! compatible Markdown parser.  Source repository is at &lt;https://github.com/kivikakk/comrak&gt;.</span>
@@ -170,9 +184,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//! extern crate comrak;</span>
-<span class="doccomment">//! extern crate typed_arena;</span>
-<span class="doccomment">//! use typed_arena::Arena;</span>
-<span class="doccomment">//! use comrak::{parse_document, format_html, ComrakOptions};</span>
+<span class="doccomment">//! use comrak::{Arena, parse_document, format_html, ComrakOptions};</span>
 <span class="doccomment">//! use comrak::nodes::{AstNode, NodeValue};</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # fn main() {</span>
@@ -217,8 +229,9 @@
 
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>, <span class="ident">missing_debug_implementations</span>, <span class="ident">missing_copy_implementations</span>, <span class="ident">trivial_casts</span>,
         <span class="ident">trivial_numeric_casts</span>, <span class="ident">unstable_features</span>, <span class="ident">unused_import_braces</span>)]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dev&quot;</span>, <span class="ident">allow</span>(<span class="ident">unstable_features</span>))]</span>
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">unknown_lints</span>, <span class="ident">doc_markdown</span>, <span class="ident">cyclomatic_complexity</span>)]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;benchmarks&quot;</span>, <span class="ident">allow</span>(<span class="ident">unstable_features</span>))]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;benchmarks&quot;</span>, <span class="ident">feature</span>(<span class="ident">test</span>))]</span>
 
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">entities</span>;
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
@@ -227,6 +240,10 @@
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">pest_derive</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">regex</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;benchmarks&quot;</span>)]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">test</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">timebomb</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">twoway</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">typed_arena</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">unicode_categories</span>;
@@ -246,7 +263,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cm</span>::<span class="ident">format_document</span> <span class="kw">as</span> <span class="ident">format_commonmark</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">html</span>::<span class="ident">format_document</span> <span class="kw">as</span> <span class="ident">format_html</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">parser</span>::{<span class="ident">parse_document</span>, <span class="ident">ComrakOptions</span>};
-<span class="kw">use</span> <span class="ident">typed_arena</span>::<span class="ident">Arena</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">typed_arena</span>::<span class="ident">Arena</span>;
 
 <span class="doccomment">/// Render Markdown to HTML.</span>
 <span class="doccomment">///</span>
@@ -272,20 +289,22 @@
                 <h2>Keyboard Shortcuts</h2>
 
                 <dl>
-                    <dt>?</dt>
+                    <dt><kbd>?</kbd></dt>
                     <dd>Show this help dialog</dd>
-                    <dt>S</dt>
+                    <dt><kbd>S</kbd></dt>
                     <dd>Focus the search field</dd>
-                    <dt>↑</dt>
+                    <dt><kbd>↑</kbd></dt>
                     <dd>Move up in search results</dd>
-                    <dt>↓</dt>
+                    <dt><kbd>↓</kbd></dt>
                     <dd>Move down in search results</dd>
-                    <dt>↹</dt>
+                    <dt><kbd>↹</kbd></dt>
                     <dd>Switch tab</dd>
-                    <dt>&#9166;</dt>
+                    <dt><kbd>&#9166;</kbd></dt>
                     <dd>Go to active search result</dd>
-                    <dt style="width:31px;">+ / -</dt>
-                    <dd>Collapse/expand all sections</dd>
+                    <dt><kbd>+</kbd></dt>
+                    <dd>Expand all sections</dd>
+                    <dt><kbd>-</kbd></dt>
+                    <dd>Collapse all sections</dd>
                 </dl>
             </div>
 

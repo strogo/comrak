@@ -10,8 +10,11 @@
     <title>comrak::parse_document - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../normalize.css">
-    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+    
+    <link rel="stylesheet" type="text/css" href="../dark.css">
+    <link rel="stylesheet" type="text/css" href="../main.css" id="themeStyle">
+    <script src="../storage.js"></script>
     
 
     
@@ -28,10 +31,18 @@
     
 
     <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
         
         <p class='location'><a href='index.html'>comrak</a></p><script>window.sidebarCurrent = {name: 'parse_document', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
+    <div class="theme-picker">
+        <button id="theme-picker" aria-label="Pick another theme!">
+            <img src="../brush.svg" width="18" alt="Pick another theme!">
+        </button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
     <nav class="sub">
         <form class="search-form js-only">
             <div class="search-container">
@@ -49,8 +60,7 @@
                        [<span class='inner'>&#x2212;</span>]
                    </a>
                </span><a class='srclink' href='../src/comrak/parser/mod.rs.html#27-45' title='goto source code'>[src]</a></span></h1>
-<pre class='rust fn'>pub fn parse_document&lt;'a&gt;(<br>&nbsp;&nbsp;&nbsp;&nbsp;arena: &amp;'a <a class="struct" href="../typed_arena/struct.Arena.html" title="struct typed_arena::Arena">Arena</a>&lt;<a class="type" href="../comrak/nodes/type.AstNode.html" title="type comrak::nodes::AstNode">AstNode</a>&lt;'a&gt;&gt;, <br>&nbsp;&nbsp;&nbsp;&nbsp;buffer: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;options: &amp;<a class="struct" href="../comrak/struct.ComrakOptions.html" title="struct comrak::ComrakOptions">ComrakOptions</a><br>) -&gt; &amp;'a <a class="type" href="../comrak/nodes/type.AstNode.html" title="type comrak::nodes::AstNode">AstNode</a>&lt;'a&gt;</pre><div class='docblock'><p>Parse a Markdown document to an AST.</p>
-
+<pre class='rust fn'>pub fn parse_document&lt;'a&gt;(<br>&nbsp;&nbsp;&nbsp;&nbsp;arena: &amp;'a <a class="struct" href="../comrak/struct.Arena.html" title="struct comrak::Arena">Arena</a>&lt;<a class="type" href="../comrak/nodes/type.AstNode.html" title="type comrak::nodes::AstNode">AstNode</a>&lt;'a&gt;&gt;, <br>&nbsp;&nbsp;&nbsp;&nbsp;buffer: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;options: &amp;<a class="struct" href="../comrak/struct.ComrakOptions.html" title="struct comrak::ComrakOptions">ComrakOptions</a><br>) -&gt; &amp;'a <a class="type" href="../comrak/nodes/type.AstNode.html" title="type comrak::nodes::AstNode">AstNode</a>&lt;'a&gt;</pre><div class='docblock'><p>Parse a Markdown document to an AST.</p>
 <p>See the documentation of the crate root for an example.</p>
 </div></section>
     <section id='search' class="content hidden"></section>
@@ -65,20 +75,22 @@
                 <h2>Keyboard Shortcuts</h2>
 
                 <dl>
-                    <dt>?</dt>
+                    <dt><kbd>?</kbd></dt>
                     <dd>Show this help dialog</dd>
-                    <dt>S</dt>
+                    <dt><kbd>S</kbd></dt>
                     <dd>Focus the search field</dd>
-                    <dt>↑</dt>
+                    <dt><kbd>↑</kbd></dt>
                     <dd>Move up in search results</dd>
-                    <dt>↓</dt>
+                    <dt><kbd>↓</kbd></dt>
                     <dd>Move down in search results</dd>
-                    <dt>↹</dt>
+                    <dt><kbd>↹</kbd></dt>
                     <dd>Switch tab</dd>
-                    <dt>&#9166;</dt>
+                    <dt><kbd>&#9166;</kbd></dt>
                     <dd>Go to active search result</dd>
-                    <dt style="width:31px;">+ / -</dt>
-                    <dd>Collapse/expand all sections</dd>
+                    <dt><kbd>+</kbd></dt>
+                    <dd>Expand all sections</dd>
+                    <dt><kbd>-</kbd></dt>
+                    <dd>Collapse all sections</dd>
                 </dl>
             </div>
 

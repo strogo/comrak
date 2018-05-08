@@ -4,14 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/Users/kivikakk/.cargo/registry/src/github.com-1ecc6299db9ec823/pest-1.0.1/src/lib.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/kivikakk/.cargo/registry/src/github.com-1ecc6299db9ec823/pest-1.0.6/src/lib.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>lib.rs.html -- source</title>
 
     <link rel="stylesheet" type="text/css" href="../../normalize.css">
-    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../../main.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle">
+    
+    <link rel="stylesheet" type="text/css" href="../../dark.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css" id="themeStyle">
+    <script src="../../storage.js"></script>
     
 
     
@@ -28,10 +31,18 @@
     
 
     <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
         
         
     </nav>
 
+    <div class="theme-picker">
+        <button id="theme-picker" aria-label="Pick another theme!">
+            <img src="../../brush.svg" width="18" alt="Pick another theme!">
+        </button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../../theme.js"></script>
     <nav class="sub">
         <form class="search-form js-only">
             <div class="search-container">
@@ -150,9 +161,9 @@
 <span class="doccomment">//! pest works mainly through a `trait`, `Parser`, which provides an interface to the parsing</span>
 <span class="doccomment">//! functionality. Since `Parser` is a `trait`, parsing needs to be defined either though the</span>
 <span class="doccomment">//! `#[derive(Parser)]` attribute, or manually through the [`Position API`](struct.Position.html).</span>
-<span class="doccomment">//! The use of the //! `derive` is highly encouraged since this is the only way you can make</span>
-<span class="doccomment">//! use of pest&#39;s PEG grammar, while manual parser definition can be used where highly specific</span>
-<span class="doccomment">//! or efficient parsing is required.</span>
+<span class="doccomment">//! The use of the `derive` is highly encouraged since this is the only way you can make use of</span>
+<span class="doccomment">//! pest&#39;s PEG grammar, while manual parser definition can be used where highly specific or</span>
+<span class="doccomment">//! efficient parsing is required.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## `#[derive(Parser)]`</span>
 <span class="doccomment">//!</span>
@@ -232,20 +243,22 @@
                 <h2>Keyboard Shortcuts</h2>
 
                 <dl>
-                    <dt>?</dt>
+                    <dt><kbd>?</kbd></dt>
                     <dd>Show this help dialog</dd>
-                    <dt>S</dt>
+                    <dt><kbd>S</kbd></dt>
                     <dd>Focus the search field</dd>
-                    <dt>↑</dt>
+                    <dt><kbd>↑</kbd></dt>
                     <dd>Move up in search results</dd>
-                    <dt>↓</dt>
+                    <dt><kbd>↓</kbd></dt>
                     <dd>Move down in search results</dd>
-                    <dt>↹</dt>
+                    <dt><kbd>↹</kbd></dt>
                     <dd>Switch tab</dd>
-                    <dt>&#9166;</dt>
+                    <dt><kbd>&#9166;</kbd></dt>
                     <dd>Go to active search result</dd>
-                    <dt style="width:31px;">+ / -</dt>
-                    <dd>Collapse/expand all sections</dd>
+                    <dt><kbd>+</kbd></dt>
+                    <dd>Expand all sections</dd>
+                    <dt><kbd>-</kbd></dt>
+                    <dd>Collapse all sections</dd>
                 </dl>
             </div>
 

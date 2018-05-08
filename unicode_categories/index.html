@@ -10,8 +10,11 @@
     <title>unicode_categories - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../normalize.css">
-    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+    
+    <link rel="stylesheet" type="text/css" href="../dark.css">
+    <link rel="stylesheet" type="text/css" href="../main.css" id="themeStyle">
+    <script src="../storage.js"></script>
     
 
     
@@ -28,10 +31,18 @@
     
 
     <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
         
-        <p class='location'>Crate unicode_categories</p><div class="block items"><ul><li><a href="#traits">Traits</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'unicode_categories', ty: 'mod', relpath: '../'};</script>
+        <p class='location'>Crate unicode_categories</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#traits">Traits</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'unicode_categories', ty: 'mod', relpath: '../'};</script></div>
     </nav>
 
+    <div class="theme-picker">
+        <button id="theme-picker" aria-label="Pick another theme!">
+            <img src="../brush.svg" width="18" alt="Pick another theme!">
+        </button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
     <nav class="sub">
         <form class="search-form js-only">
             <div class="search-container">
@@ -52,7 +63,6 @@
 <div class='docblock'><p><code>unicode_categories</code> is a crate that adds extensions to the
 <code>char</code> primitive type that allow for a char to be queried
 about whether or not it belongs to a particular Unicode category.</p>
-
 <p>These extensions exist on the <code>UnicodeCategories</code> trait, so
 by importing it the extensions will be active on all chars:</p>
 
@@ -62,7 +72,6 @@ by importing it the extensions will be active on all chars:</p>
 <span class="macro">assert</span><span class="macro">!</span>(<span class="string">&#39;a&#39;</span>.<span class="ident">is_letter_lowercase</span>());
 <span class="macro">assert</span><span class="macro">!</span>(<span class="string">&#39;A&#39;</span>.<span class="ident">is_letter_uppercase</span>());
 <span class="macro">assert</span><span class="macro">!</span>(<span class="string">&#39;\n&#39;</span>.<span class="ident">is_other_control</span>());</pre>
-
 <p><code>UnicodeCategories</code> is the only item contained exported
 by this crate and contains all of methods that allow
 for category queries.</p>
@@ -87,20 +96,22 @@ for category queries.</p>
                 <h2>Keyboard Shortcuts</h2>
 
                 <dl>
-                    <dt>?</dt>
+                    <dt><kbd>?</kbd></dt>
                     <dd>Show this help dialog</dd>
-                    <dt>S</dt>
+                    <dt><kbd>S</kbd></dt>
                     <dd>Focus the search field</dd>
-                    <dt>↑</dt>
+                    <dt><kbd>↑</kbd></dt>
                     <dd>Move up in search results</dd>
-                    <dt>↓</dt>
+                    <dt><kbd>↓</kbd></dt>
                     <dd>Move down in search results</dd>
-                    <dt>↹</dt>
+                    <dt><kbd>↹</kbd></dt>
                     <dd>Switch tab</dd>
-                    <dt>&#9166;</dt>
+                    <dt><kbd>&#9166;</kbd></dt>
                     <dd>Go to active search result</dd>
-                    <dt style="width:31px;">+ / -</dt>
-                    <dd>Collapse/expand all sections</dd>
+                    <dt><kbd>+</kbd></dt>
+                    <dd>Expand all sections</dd>
+                    <dt><kbd>-</kbd></dt>
+                    <dd>Collapse all sections</dd>
                 </dl>
             </div>
 

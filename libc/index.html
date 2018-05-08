@@ -10,8 +10,11 @@
     <title>libc - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../normalize.css">
-    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+    
+    <link rel="stylesheet" type="text/css" href="../dark.css">
+    <link rel="stylesheet" type="text/css" href="../main.css" id="themeStyle">
+    <script src="../storage.js"></script>
     
 
     <link rel="shortcut icon" href="https://doc.rust-lang.org/favicon.ico">
@@ -28,10 +31,18 @@
     
 
     <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
         <a href='../libc/index.html'><img src='https://www.rust-lang.org/logos/rust-logo-128x128-blk-v2.png' alt='logo' width='100'></a>
-        <p class='location'>Crate libc</p><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#constants">Constants</a></li><li><a href="#functions">Functions</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'libc', ty: 'mod', relpath: '../'};</script>
+        <p class='location'>Crate libc</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#constants">Constants</a></li><li><a href="#functions">Functions</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'libc', ty: 'mod', relpath: '../'};</script></div>
     </nav>
 
+    <div class="theme-picker">
+        <button id="theme-picker" aria-label="Pick another theme!">
+            <img src="../brush.svg" width="18" alt="Pick another theme!">
+        </button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
     <nav class="sub">
         <form class="search-form js-only">
             <div class="search-container">
@@ -48,7 +59,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a class='srclink' href='../src/libc/lib.rs.html#11-301' title='goto source code'>[src]</a></span></h1>
+               </span><a class='srclink' href='../src/libc/lib.rs.html#11-307' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Crate docs</p>
 </div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
@@ -202,6 +213,13 @@
                        <tr class=' module-item'>
                            <td><a class="struct" href="struct.ip_mreq.html"
                                   title='struct libc::ip_mreq'>ip_mreq</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ipc_perm.html"
+                                  title='struct libc::ipc_perm'>ipc_perm</a></td>
                            <td class='docblock-short'>
                                 
                            </td>
@@ -431,6 +449,13 @@
                            </td>
                        </tr>
                        <tr class=' module-item'>
+                           <td><a class="struct" href="struct.shmid_ds.html"
+                                  title='struct libc::shmid_ds'>shmid_ds</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
                            <td><a class="struct" href="struct.sigaction.html"
                                   title='struct libc::sigaction'>sigaction</a></td>
                            <td class='docblock-short'>
@@ -461,6 +486,13 @@
                        <tr class=' module-item'>
                            <td><a class="struct" href="struct.sockaddr.html"
                                   title='struct libc::sockaddr'>sockaddr</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.sockaddr_ctl.html"
+                                  title='struct libc::sockaddr_ctl'>sockaddr_ctl</a></td>
                            <td class='docblock-short'>
                                 
                            </td>
@@ -1891,6 +1923,13 @@
                        <tr class=' module-item'>
                            <td><a class="constant" href="constant.DT_SOCK.html"
                                   title='constant libc::DT_SOCK'>DT_SOCK</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.DT_UNKNOWN.html"
+                                  title='constant libc::DT_UNKNOWN'>DT_UNKNOWN</a></td>
                            <td class='docblock-short'>
                                 
                            </td>
@@ -3842,10 +3881,95 @@
                            </td>
                        </tr>
                        <tr class=' module-item'>
+                           <td><a class="constant" href="constant.INT_MAX.html"
+                                  title='constant libc::INT_MAX'>INT_MAX</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.INT_MIN.html"
+                                  title='constant libc::INT_MIN'>INT_MIN</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.IPC_CREAT.html"
+                                  title='constant libc::IPC_CREAT'>IPC_CREAT</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.IPC_EXCL.html"
+                                  title='constant libc::IPC_EXCL'>IPC_EXCL</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.IPC_M.html"
+                                  title='constant libc::IPC_M'>IPC_M</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.IPC_NOWAIT.html"
+                                  title='constant libc::IPC_NOWAIT'>IPC_NOWAIT</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.IPC_PRIVATE.html"
+                                  title='constant libc::IPC_PRIVATE'>IPC_PRIVATE</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.IPC_R.html"
+                                  title='constant libc::IPC_R'>IPC_R</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.IPC_RMID.html"
+                                  title='constant libc::IPC_RMID'>IPC_RMID</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.IPC_SET.html"
+                                  title='constant libc::IPC_SET'>IPC_SET</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.IPC_STAT.html"
+                                  title='constant libc::IPC_STAT'>IPC_STAT</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.IPC_W.html"
+                                  title='constant libc::IPC_W'>IPC_W</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
                            <td><a class="constant" href="constant.IPPROTO_3PC.html"
                                   title='constant libc::IPPROTO_3PC'>IPPROTO_3PC</a></td>
                            <td class='docblock-short'>
                                 <p>Third Party Connect</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3853,6 +3977,7 @@
                                   title='constant libc::IPPROTO_ADFS'>IPPROTO_ADFS</a></td>
                            <td class='docblock-short'>
                                 <p>Any distributed FS</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3860,6 +3985,7 @@
                                   title='constant libc::IPPROTO_AH'>IPPROTO_AH</a></td>
                            <td class='docblock-short'>
                                 <p>IP6 Auth Header</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3867,6 +3993,7 @@
                                   title='constant libc::IPPROTO_AHIP'>IPPROTO_AHIP</a></td>
                            <td class='docblock-short'>
                                 <p>any host internal protocol</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3874,6 +4001,7 @@
                                   title='constant libc::IPPROTO_APES'>IPPROTO_APES</a></td>
                            <td class='docblock-short'>
                                 <p>any private encr. scheme</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3881,6 +4009,7 @@
                                   title='constant libc::IPPROTO_ARGUS'>IPPROTO_ARGUS</a></td>
                            <td class='docblock-short'>
                                 <p>Argus</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3888,6 +4017,7 @@
                                   title='constant libc::IPPROTO_AX25'>IPPROTO_AX25</a></td>
                            <td class='docblock-short'>
                                 <p>AX.25 Frames</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3895,6 +4025,7 @@
                                   title='constant libc::IPPROTO_BHA'>IPPROTO_BHA</a></td>
                            <td class='docblock-short'>
                                 <p>BHA</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3902,6 +4033,7 @@
                                   title='constant libc::IPPROTO_BLT'>IPPROTO_BLT</a></td>
                            <td class='docblock-short'>
                                 <p>Bulk Data Transfer</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3909,6 +4041,7 @@
                                   title='constant libc::IPPROTO_BRSATMON'>IPPROTO_BRSATMON</a></td>
                            <td class='docblock-short'>
                                 <p>BackRoom SATNET Monitoring</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3916,6 +4049,7 @@
                                   title='constant libc::IPPROTO_CFTP'>IPPROTO_CFTP</a></td>
                            <td class='docblock-short'>
                                 <p>CFTP</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3923,6 +4057,7 @@
                                   title='constant libc::IPPROTO_CHAOS'>IPPROTO_CHAOS</a></td>
                            <td class='docblock-short'>
                                 <p>Chaos</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3930,6 +4065,7 @@
                                   title='constant libc::IPPROTO_CMTP'>IPPROTO_CMTP</a></td>
                            <td class='docblock-short'>
                                 <p>Control Message Transport</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3937,6 +4073,7 @@
                                   title='constant libc::IPPROTO_CPHB'>IPPROTO_CPHB</a></td>
                            <td class='docblock-short'>
                                 <p>Comp. Prot. HeartBeat</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3944,6 +4081,7 @@
                                   title='constant libc::IPPROTO_CPNX'>IPPROTO_CPNX</a></td>
                            <td class='docblock-short'>
                                 <p>Comp. Prot. Net. Executive</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3951,6 +4089,7 @@
                                   title='constant libc::IPPROTO_DDP'>IPPROTO_DDP</a></td>
                            <td class='docblock-short'>
                                 <p>Datagram Delivery</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3958,6 +4097,7 @@
                                   title='constant libc::IPPROTO_DGP'>IPPROTO_DGP</a></td>
                            <td class='docblock-short'>
                                 <p>dissimilar gateway prot.</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3965,6 +4105,7 @@
                                   title='constant libc::IPPROTO_DIVERT'>IPPROTO_DIVERT</a></td>
                            <td class='docblock-short'>
                                 <p>divert pseudo-protocol</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3972,6 +4113,7 @@
                                   title='constant libc::IPPROTO_DONE'>IPPROTO_DONE</a></td>
                            <td class='docblock-short'>
                                 <p>last return value of *_input(), meaning &quot;all job for this pkt is done&quot;.</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3979,6 +4121,7 @@
                                   title='constant libc::IPPROTO_DSTOPTS'>IPPROTO_DSTOPTS</a></td>
                            <td class='docblock-short'>
                                 <p>IP6 destination option</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3986,6 +4129,7 @@
                                   title='constant libc::IPPROTO_EGP'>IPPROTO_EGP</a></td>
                            <td class='docblock-short'>
                                 <p>exterior gateway protocol</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -3993,6 +4137,7 @@
                                   title='constant libc::IPPROTO_EMCON'>IPPROTO_EMCON</a></td>
                            <td class='docblock-short'>
                                 <p>EMCON</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4000,6 +4145,7 @@
                                   title='constant libc::IPPROTO_ENCAP'>IPPROTO_ENCAP</a></td>
                            <td class='docblock-short'>
                                 <p>encapsulation header</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4007,6 +4153,7 @@
                                   title='constant libc::IPPROTO_EON'>IPPROTO_EON</a></td>
                            <td class='docblock-short'>
                                 <p>ISO cnlp</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4014,6 +4161,7 @@
                                   title='constant libc::IPPROTO_ESP'>IPPROTO_ESP</a></td>
                            <td class='docblock-short'>
                                 <p>IP6 Encap Sec. Payload</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4021,6 +4169,7 @@
                                   title='constant libc::IPPROTO_ETHERIP'>IPPROTO_ETHERIP</a></td>
                            <td class='docblock-short'>
                                 <p>Ethernet IP encapsulation</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4028,6 +4177,7 @@
                                   title='constant libc::IPPROTO_FRAGMENT'>IPPROTO_FRAGMENT</a></td>
                            <td class='docblock-short'>
                                 <p>IP6 fragmentation header</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4035,6 +4185,7 @@
                                   title='constant libc::IPPROTO_GGP'>IPPROTO_GGP</a></td>
                            <td class='docblock-short'>
                                 <p>gateway<sup>2</sup> (deprecated)</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4042,6 +4193,7 @@
                                   title='constant libc::IPPROTO_GMTP'>IPPROTO_GMTP</a></td>
                            <td class='docblock-short'>
                                 <p>GMTP</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4049,6 +4201,7 @@
                                   title='constant libc::IPPROTO_GRE'>IPPROTO_GRE</a></td>
                            <td class='docblock-short'>
                                 <p>General Routing Encap.</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4056,6 +4209,7 @@
                                   title='constant libc::IPPROTO_HELLO'>IPPROTO_HELLO</a></td>
                            <td class='docblock-short'>
                                 <p>&quot;hello&quot; routing protocol</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4063,6 +4217,7 @@
                                   title='constant libc::IPPROTO_HMP'>IPPROTO_HMP</a></td>
                            <td class='docblock-short'>
                                 <p>Host Monitoring</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4070,6 +4225,7 @@
                                   title='constant libc::IPPROTO_HOPOPTS'>IPPROTO_HOPOPTS</a></td>
                            <td class='docblock-short'>
                                 <p>IP6 hop-by-hop options</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4091,6 +4247,7 @@
                                   title='constant libc::IPPROTO_IDP'>IPPROTO_IDP</a></td>
                            <td class='docblock-short'>
                                 <p>xns idp</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4098,6 +4255,7 @@
                                   title='constant libc::IPPROTO_IDPR'>IPPROTO_IDPR</a></td>
                            <td class='docblock-short'>
                                 <p>InterDomain Policy Routing</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4105,6 +4263,7 @@
                                   title='constant libc::IPPROTO_IDRP'>IPPROTO_IDRP</a></td>
                            <td class='docblock-short'>
                                 <p>InterDomain Routing</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4112,6 +4271,7 @@
                                   title='constant libc::IPPROTO_IGMP'>IPPROTO_IGMP</a></td>
                            <td class='docblock-short'>
                                 <p>group mgmt protocol</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4119,6 +4279,7 @@
                                   title='constant libc::IPPROTO_IGP'>IPPROTO_IGP</a></td>
                            <td class='docblock-short'>
                                 <p>NSFNET-IGP</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4126,6 +4287,7 @@
                                   title='constant libc::IPPROTO_IGRP'>IPPROTO_IGRP</a></td>
                            <td class='docblock-short'>
                                 <p>Cisco/GXS IGRP</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4133,6 +4295,7 @@
                                   title='constant libc::IPPROTO_IL'>IPPROTO_IL</a></td>
                            <td class='docblock-short'>
                                 <p>IL transport protocol</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4140,6 +4303,7 @@
                                   title='constant libc::IPPROTO_INLSP'>IPPROTO_INLSP</a></td>
                            <td class='docblock-short'>
                                 <p>Integ. Net Layer Security</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4147,6 +4311,7 @@
                                   title='constant libc::IPPROTO_INP'>IPPROTO_INP</a></td>
                            <td class='docblock-short'>
                                 <p>Merit Internodal</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4161,6 +4326,7 @@
                                   title='constant libc::IPPROTO_IPCOMP'>IPPROTO_IPCOMP</a></td>
                            <td class='docblock-short'>
                                 <p>payload compression (IPComp)</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4168,6 +4334,7 @@
                                   title='constant libc::IPPROTO_IPCV'>IPPROTO_IPCV</a></td>
                            <td class='docblock-short'>
                                 <p>Packet Core Utility</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4175,6 +4342,7 @@
                                   title='constant libc::IPPROTO_IPEIP'>IPPROTO_IPEIP</a></td>
                            <td class='docblock-short'>
                                 <p>IP encapsulated in IP</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4182,6 +4350,7 @@
                                   title='constant libc::IPPROTO_IPIP'>IPPROTO_IPIP</a></td>
                            <td class='docblock-short'>
                                 <p>for compatibility</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4189,6 +4358,7 @@
                                   title='constant libc::IPPROTO_IPPC'>IPPROTO_IPPC</a></td>
                            <td class='docblock-short'>
                                 <p>Pluribus Packet Core</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4203,6 +4373,7 @@
                                   title='constant libc::IPPROTO_IRTP'>IPPROTO_IRTP</a></td>
                            <td class='docblock-short'>
                                 <p>Reliable Transaction</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4210,6 +4381,7 @@
                                   title='constant libc::IPPROTO_KRYPTOLAN'>IPPROTO_KRYPTOLAN</a></td>
                            <td class='docblock-short'>
                                 <p>Kryptolan</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4217,6 +4389,7 @@
                                   title='constant libc::IPPROTO_LARP'>IPPROTO_LARP</a></td>
                            <td class='docblock-short'>
                                 <p>Locus Address Resoloution</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4224,6 +4397,7 @@
                                   title='constant libc::IPPROTO_LEAF1'>IPPROTO_LEAF1</a></td>
                            <td class='docblock-short'>
                                 <p>Leaf-1</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4231,6 +4405,7 @@
                                   title='constant libc::IPPROTO_LEAF2'>IPPROTO_LEAF2</a></td>
                            <td class='docblock-short'>
                                 <p>Leaf-2</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4245,6 +4420,7 @@
                                   title='constant libc::IPPROTO_MEAS'>IPPROTO_MEAS</a></td>
                            <td class='docblock-short'>
                                 <p>DCN Measurement Subsystems</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4252,6 +4428,7 @@
                                   title='constant libc::IPPROTO_MHRP'>IPPROTO_MHRP</a></td>
                            <td class='docblock-short'>
                                 <p>Mobile Host Routing</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4259,6 +4436,7 @@
                                   title='constant libc::IPPROTO_MICP'>IPPROTO_MICP</a></td>
                            <td class='docblock-short'>
                                 <p>Mobile Int.ing control</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4266,6 +4444,7 @@
                                   title='constant libc::IPPROTO_MTP'>IPPROTO_MTP</a></td>
                            <td class='docblock-short'>
                                 <p>Multicast Transport</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4273,6 +4452,7 @@
                                   title='constant libc::IPPROTO_MUX'>IPPROTO_MUX</a></td>
                            <td class='docblock-short'>
                                 <p>Multiplexing</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4280,6 +4460,7 @@
                                   title='constant libc::IPPROTO_ND'>IPPROTO_ND</a></td>
                            <td class='docblock-short'>
                                 <p>Sun net disk proto (temp.)</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4287,6 +4468,7 @@
                                   title='constant libc::IPPROTO_NHRP'>IPPROTO_NHRP</a></td>
                            <td class='docblock-short'>
                                 <p>Next Hop Resolution</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4294,6 +4476,7 @@
                                   title='constant libc::IPPROTO_NONE'>IPPROTO_NONE</a></td>
                            <td class='docblock-short'>
                                 <p>IP6 no next header</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4301,6 +4484,7 @@
                                   title='constant libc::IPPROTO_NSP'>IPPROTO_NSP</a></td>
                            <td class='docblock-short'>
                                 <p>Network Services</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4308,6 +4492,7 @@
                                   title='constant libc::IPPROTO_NVPII'>IPPROTO_NVPII</a></td>
                            <td class='docblock-short'>
                                 <p>network voice protocol</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4315,6 +4500,7 @@
                                   title='constant libc::IPPROTO_OSPFIGP'>IPPROTO_OSPFIGP</a></td>
                            <td class='docblock-short'>
                                 <p>OSPFIGP</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4322,6 +4508,7 @@
                                   title='constant libc::IPPROTO_PGM'>IPPROTO_PGM</a></td>
                            <td class='docblock-short'>
                                 <p>PGM</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4329,6 +4516,7 @@
                                   title='constant libc::IPPROTO_PIGP'>IPPROTO_PIGP</a></td>
                            <td class='docblock-short'>
                                 <p>private interior gateway</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4336,6 +4524,7 @@
                                   title='constant libc::IPPROTO_PIM'>IPPROTO_PIM</a></td>
                            <td class='docblock-short'>
                                 <p>Protocol Independent Mcast</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4343,6 +4532,7 @@
                                   title='constant libc::IPPROTO_PRM'>IPPROTO_PRM</a></td>
                            <td class='docblock-short'>
                                 <p>Packet Radio Measurement</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4350,6 +4540,7 @@
                                   title='constant libc::IPPROTO_PUP'>IPPROTO_PUP</a></td>
                            <td class='docblock-short'>
                                 <p>pup</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4357,6 +4548,7 @@
                                   title='constant libc::IPPROTO_PVP'>IPPROTO_PVP</a></td>
                            <td class='docblock-short'>
                                 <p>Packet Video Protocol</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4364,6 +4556,7 @@
                                   title='constant libc::IPPROTO_RAW'>IPPROTO_RAW</a></td>
                            <td class='docblock-short'>
                                 <p>raw IP packet</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4371,6 +4564,7 @@
                                   title='constant libc::IPPROTO_RCCMON'>IPPROTO_RCCMON</a></td>
                            <td class='docblock-short'>
                                 <p>BBN RCC Monitoring</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4378,6 +4572,7 @@
                                   title='constant libc::IPPROTO_RDP'>IPPROTO_RDP</a></td>
                            <td class='docblock-short'>
                                 <p>Reliable Data</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4385,6 +4580,7 @@
                                   title='constant libc::IPPROTO_ROUTING'>IPPROTO_ROUTING</a></td>
                            <td class='docblock-short'>
                                 <p>IP6 routing header</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4392,6 +4588,7 @@
                                   title='constant libc::IPPROTO_RSVP'>IPPROTO_RSVP</a></td>
                            <td class='docblock-short'>
                                 <p>resource reservation</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4399,6 +4596,7 @@
                                   title='constant libc::IPPROTO_RVD'>IPPROTO_RVD</a></td>
                            <td class='docblock-short'>
                                 <p>Remote Virtual Disk</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4406,6 +4604,7 @@
                                   title='constant libc::IPPROTO_SATEXPAK'>IPPROTO_SATEXPAK</a></td>
                            <td class='docblock-short'>
                                 <p>SATNET/Backroom EXPAK</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4413,6 +4612,7 @@
                                   title='constant libc::IPPROTO_SATMON'>IPPROTO_SATMON</a></td>
                            <td class='docblock-short'>
                                 <p>Satnet Monitoring</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4420,6 +4620,7 @@
                                   title='constant libc::IPPROTO_SCCSP'>IPPROTO_SCCSP</a></td>
                            <td class='docblock-short'>
                                 <p>Semaphore Comm. security</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4427,6 +4628,7 @@
                                   title='constant libc::IPPROTO_SCTP'>IPPROTO_SCTP</a></td>
                            <td class='docblock-short'>
                                 <p>SCTP</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4434,6 +4636,7 @@
                                   title='constant libc::IPPROTO_SDRP'>IPPROTO_SDRP</a></td>
                            <td class='docblock-short'>
                                 <p>Source Demand Routing</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4441,6 +4644,7 @@
                                   title='constant libc::IPPROTO_SEP'>IPPROTO_SEP</a></td>
                            <td class='docblock-short'>
                                 <p>Sequential Exchange</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4448,6 +4652,7 @@
                                   title='constant libc::IPPROTO_SRPC'>IPPROTO_SRPC</a></td>
                            <td class='docblock-short'>
                                 <p>Strite RPC protocol</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4455,6 +4660,7 @@
                                   title='constant libc::IPPROTO_ST'>IPPROTO_ST</a></td>
                            <td class='docblock-short'>
                                 <p>Stream protocol II.</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4462,6 +4668,7 @@
                                   title='constant libc::IPPROTO_SVMTP'>IPPROTO_SVMTP</a></td>
                            <td class='docblock-short'>
                                 <p>Secure VMTP</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4469,6 +4676,7 @@
                                   title='constant libc::IPPROTO_SWIPE'>IPPROTO_SWIPE</a></td>
                            <td class='docblock-short'>
                                 <p>IP with encryption</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4476,6 +4684,7 @@
                                   title='constant libc::IPPROTO_TCF'>IPPROTO_TCF</a></td>
                            <td class='docblock-short'>
                                 <p>TCF</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4490,6 +4699,7 @@
                                   title='constant libc::IPPROTO_TP'>IPPROTO_TP</a></td>
                            <td class='docblock-short'>
                                 <p>tp-4 w/ class negotiation</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4497,6 +4707,7 @@
                                   title='constant libc::IPPROTO_TPXX'>IPPROTO_TPXX</a></td>
                            <td class='docblock-short'>
                                 <p>TP++ Transport</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4504,6 +4715,7 @@
                                   title='constant libc::IPPROTO_TRUNK1'>IPPROTO_TRUNK1</a></td>
                            <td class='docblock-short'>
                                 <p>Trunk-1</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4511,6 +4723,7 @@
                                   title='constant libc::IPPROTO_TRUNK2'>IPPROTO_TRUNK2</a></td>
                            <td class='docblock-short'>
                                 <p>Trunk-2</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4518,6 +4731,7 @@
                                   title='constant libc::IPPROTO_TTP'>IPPROTO_TTP</a></td>
                            <td class='docblock-short'>
                                 <p>TTP</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4532,6 +4746,7 @@
                                   title='constant libc::IPPROTO_VINES'>IPPROTO_VINES</a></td>
                            <td class='docblock-short'>
                                 <p>Banyon VINES</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4539,6 +4754,7 @@
                                   title='constant libc::IPPROTO_VISA'>IPPROTO_VISA</a></td>
                            <td class='docblock-short'>
                                 <p>VISA Protocol</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4546,6 +4762,7 @@
                                   title='constant libc::IPPROTO_VMTP'>IPPROTO_VMTP</a></td>
                            <td class='docblock-short'>
                                 <p>VMTP</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4553,6 +4770,7 @@
                                   title='constant libc::IPPROTO_WBEXPAK'>IPPROTO_WBEXPAK</a></td>
                            <td class='docblock-short'>
                                 <p>WIDEBAND EXPAK</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4560,6 +4778,7 @@
                                   title='constant libc::IPPROTO_WBMON'>IPPROTO_WBMON</a></td>
                            <td class='docblock-short'>
                                 <p>WIDEBAND Monitoring</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4567,6 +4786,7 @@
                                   title='constant libc::IPPROTO_WSN'>IPPROTO_WSN</a></td>
                            <td class='docblock-short'>
                                 <p>Wang Span Network</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4574,6 +4794,7 @@
                                   title='constant libc::IPPROTO_XNET'>IPPROTO_XNET</a></td>
                            <td class='docblock-short'>
                                 <p>Cross Net Debugger</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4581,6 +4802,7 @@
                                   title='constant libc::IPPROTO_XTP'>IPPROTO_XTP</a></td>
                            <td class='docblock-short'>
                                 <p>XTP</p>
+
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -4598,8 +4820,29 @@
                            </td>
                        </tr>
                        <tr class=' module-item'>
+                           <td><a class="constant" href="constant.IPV6_MULTICAST_HOPS.html"
+                                  title='constant libc::IPV6_MULTICAST_HOPS'>IPV6_MULTICAST_HOPS</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.IPV6_MULTICAST_IF.html"
+                                  title='constant libc::IPV6_MULTICAST_IF'>IPV6_MULTICAST_IF</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
                            <td><a class="constant" href="constant.IPV6_MULTICAST_LOOP.html"
                                   title='constant libc::IPV6_MULTICAST_LOOP'>IPV6_MULTICAST_LOOP</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.IPV6_UNICAST_HOPS.html"
+                                  title='constant libc::IPV6_UNICAST_HOPS'>IPV6_UNICAST_HOPS</a></td>
                            <td class='docblock-short'>
                                 
                            </td>
@@ -7552,6 +7795,34 @@
                            </td>
                        </tr>
                        <tr class=' module-item'>
+                           <td><a class="constant" href="constant.POSIX_SPAWN_RESETIDS.html"
+                                  title='constant libc::POSIX_SPAWN_RESETIDS'>POSIX_SPAWN_RESETIDS</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.POSIX_SPAWN_SETPGROUP.html"
+                                  title='constant libc::POSIX_SPAWN_SETPGROUP'>POSIX_SPAWN_SETPGROUP</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.POSIX_SPAWN_SETSIGDEF.html"
+                                  title='constant libc::POSIX_SPAWN_SETSIGDEF'>POSIX_SPAWN_SETSIGDEF</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.POSIX_SPAWN_SETSIGMASK.html"
+                                  title='constant libc::POSIX_SPAWN_SETSIGMASK'>POSIX_SPAWN_SETSIGMASK</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
                            <td><a class="constant" href="constant.PRIO_DARWIN_BG.html"
                                   title='constant libc::PRIO_DARWIN_BG'>PRIO_DARWIN_BG</a></td>
                            <td class='docblock-short'>
@@ -8604,6 +8875,41 @@
                        <tr class=' module-item'>
                            <td><a class="constant" href="constant.SEM_FAILED.html"
                                   title='constant libc::SEM_FAILED'>SEM_FAILED</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.SHMLBA.html"
+                                  title='constant libc::SHMLBA'>SHMLBA</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.SHM_R.html"
+                                  title='constant libc::SHM_R'>SHM_R</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.SHM_RDONLY.html"
+                                  title='constant libc::SHM_RDONLY'>SHM_RDONLY</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.SHM_RND.html"
+                                  title='constant libc::SHM_RND'>SHM_RND</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.SHM_W.html"
+                                  title='constant libc::SHM_W'>SHM_W</a></td>
                            <td class='docblock-short'>
                                 
                            </td>
@@ -12782,6 +13088,13 @@
                            </td>
                        </tr>
                        <tr class=' module-item'>
+                           <td><a class="fn" href="fn.endgrent.html"
+                                  title='fn libc::endgrent'>endgrent</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
                            <td><a class="fn" href="fn.endpwent.html"
                                   title='fn libc::endpwent'>endpwent</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
                            <td class='docblock-short'>
@@ -13216,6 +13529,13 @@
                            </td>
                        </tr>
                        <tr class=' module-item'>
+                           <td><a class="fn" href="fn.getdomainname.html"
+                                  title='fn libc::getdomainname'>getdomainname</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
                            <td><a class="fn" href="fn.getdtablesize.html"
                                   title='fn libc::getdtablesize'>getdtablesize</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
                            <td class='docblock-short'>
@@ -13246,6 +13566,13 @@
                        <tr class=' module-item'>
                            <td><a class="fn" href="fn.getgid.html"
                                   title='fn libc::getgid'>getgid</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.getgrent.html"
+                                  title='fn libc::getgrent'>getgrent</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
                            <td class='docblock-short'>
                                 
                            </td>
@@ -13706,6 +14033,13 @@
                            </td>
                        </tr>
                        <tr class=' module-item'>
+                           <td><a class="fn" href="fn.killpg.html"
+                                  title='fn libc::killpg'>killpg</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
                            <td><a class="fn" href="fn.kqueue.html"
                                   title='fn libc::kqueue'>kqueue</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
                            <td class='docblock-short'>
@@ -14128,6 +14462,125 @@
                        <tr class=' module-item'>
                            <td><a class="fn" href="fn.posix_openpt.html"
                                   title='fn libc::posix_openpt'>posix_openpt</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawn.html"
+                                  title='fn libc::posix_spawn'>posix_spawn</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawn_file_actions_addclose.html"
+                                  title='fn libc::posix_spawn_file_actions_addclose'>posix_spawn_file_actions_addclose</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawn_file_actions_adddup2.html"
+                                  title='fn libc::posix_spawn_file_actions_adddup2'>posix_spawn_file_actions_adddup2</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawn_file_actions_addopen.html"
+                                  title='fn libc::posix_spawn_file_actions_addopen'>posix_spawn_file_actions_addopen</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawn_file_actions_destroy.html"
+                                  title='fn libc::posix_spawn_file_actions_destroy'>posix_spawn_file_actions_destroy</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawn_file_actions_init.html"
+                                  title='fn libc::posix_spawn_file_actions_init'>posix_spawn_file_actions_init</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawnattr_destroy.html"
+                                  title='fn libc::posix_spawnattr_destroy'>posix_spawnattr_destroy</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawnattr_getflags.html"
+                                  title='fn libc::posix_spawnattr_getflags'>posix_spawnattr_getflags</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawnattr_getpgroup.html"
+                                  title='fn libc::posix_spawnattr_getpgroup'>posix_spawnattr_getpgroup</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawnattr_getsigdefault.html"
+                                  title='fn libc::posix_spawnattr_getsigdefault'>posix_spawnattr_getsigdefault</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawnattr_getsigmask.html"
+                                  title='fn libc::posix_spawnattr_getsigmask'>posix_spawnattr_getsigmask</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawnattr_init.html"
+                                  title='fn libc::posix_spawnattr_init'>posix_spawnattr_init</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawnattr_setflags.html"
+                                  title='fn libc::posix_spawnattr_setflags'>posix_spawnattr_setflags</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawnattr_setpgroup.html"
+                                  title='fn libc::posix_spawnattr_setpgroup'>posix_spawnattr_setpgroup</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawnattr_setsigdefault.html"
+                                  title='fn libc::posix_spawnattr_setsigdefault'>posix_spawnattr_setsigdefault</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawnattr_setsigmask.html"
+                                  title='fn libc::posix_spawnattr_setsigmask'>posix_spawnattr_setsigmask</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posix_spawnp.html"
+                                  title='fn libc::posix_spawnp'>posix_spawnp</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
                            <td class='docblock-short'>
                                 
                            </td>
@@ -14854,6 +15307,13 @@
                            </td>
                        </tr>
                        <tr class=' module-item'>
+                           <td><a class="fn" href="fn.setdomainname.html"
+                                  title='fn libc::setdomainname'>setdomainname</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
                            <td><a class="fn" href="fn.setenv.html"
                                   title='fn libc::setenv'>setenv</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
                            <td class='docblock-short'>
@@ -14870,6 +15330,13 @@
                        <tr class=' module-item'>
                            <td><a class="fn" href="fn.setgid.html"
                                   title='fn libc::setgid'>setgid</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.setgrent.html"
+                                  title='fn libc::setgrent'>setgrent</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
                            <td class='docblock-short'>
                                 
                            </td>
@@ -14996,6 +15463,34 @@
                        <tr class=' module-item'>
                            <td><a class="fn" href="fn.shm_unlink.html"
                                   title='fn libc::shm_unlink'>shm_unlink</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.shmat.html"
+                                  title='fn libc::shmat'>shmat</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.shmctl.html"
+                                  title='fn libc::shmctl'>shmctl</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.shmdt.html"
+                                  title='fn libc::shmdt'>shmdt</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.shmget.html"
+                                  title='fn libc::shmget'>shmget</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
                            <td class='docblock-short'>
                                 
                            </td>
@@ -15912,6 +16407,13 @@
                            </td>
                        </tr>
                        <tr class=' module-item'>
+                           <td><a class="type" href="type.key_t.html"
+                                  title='type libc::key_t'>key_t</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
                            <td><a class="type" href="type.mach_timebase_info_data_t.html"
                                   title='type libc::mach_timebase_info_data_t'>mach_timebase_info_data_t</a></td>
                            <td class='docblock-short'>
@@ -15961,6 +16463,20 @@
                            </td>
                        </tr>
                        <tr class=' module-item'>
+                           <td><a class="type" href="type.posix_spawn_file_actions_t.html"
+                                  title='type libc::posix_spawn_file_actions_t'>posix_spawn_file_actions_t</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.posix_spawnattr_t.html"
+                                  title='type libc::posix_spawnattr_t'>posix_spawnattr_t</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
                            <td><a class="type" href="type.pthread_key_t.html"
                                   title='type libc::pthread_key_t'>pthread_key_t</a></td>
                            <td class='docblock-short'>
@@ -15998,6 +16514,13 @@
                        <tr class=' module-item'>
                            <td><a class="type" href="type.sem_t.html"
                                   title='type libc::sem_t'>sem_t</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.shmatt_t.html"
+                                  title='type libc::shmatt_t'>shmatt_t</a></td>
                            <td class='docblock-short'>
                                 
                            </td>
@@ -16147,20 +16670,22 @@
                 <h2>Keyboard Shortcuts</h2>
 
                 <dl>
-                    <dt>?</dt>
+                    <dt><kbd>?</kbd></dt>
                     <dd>Show this help dialog</dd>
-                    <dt>S</dt>
+                    <dt><kbd>S</kbd></dt>
                     <dd>Focus the search field</dd>
-                    <dt>↑</dt>
+                    <dt><kbd>↑</kbd></dt>
                     <dd>Move up in search results</dd>
-                    <dt>↓</dt>
+                    <dt><kbd>↓</kbd></dt>
                     <dd>Move down in search results</dd>
-                    <dt>↹</dt>
+                    <dt><kbd>↹</kbd></dt>
                     <dd>Switch tab</dd>
-                    <dt>&#9166;</dt>
+                    <dt><kbd>&#9166;</kbd></dt>
                     <dd>Go to active search result</dd>
-                    <dt style="width:31px;">+ / -</dt>
-                    <dd>Collapse/expand all sections</dd>
+                    <dt><kbd>+</kbd></dt>
+                    <dd>Expand all sections</dd>
+                    <dt><kbd>-</kbd></dt>
+                    <dd>Collapse all sections</dd>
                 </dl>
             </div>
 

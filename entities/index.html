@@ -10,8 +10,11 @@
     <title>entities - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../normalize.css">
-    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+    
+    <link rel="stylesheet" type="text/css" href="../dark.css">
+    <link rel="stylesheet" type="text/css" href="../main.css" id="themeStyle">
+    <script src="../storage.js"></script>
     
 
     
@@ -28,10 +31,18 @@
     
 
     <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
         
-        <p class='location'>Crate entities</p><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#statics">Statics</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'entities', ty: 'mod', relpath: '../'};</script>
+        <p class='location'>Crate entities</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#statics">Statics</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'entities', ty: 'mod', relpath: '../'};</script></div>
     </nav>
 
+    <div class="theme-picker">
+        <button id="theme-picker" aria-label="Pick another theme!">
+            <img src="../brush.svg" width="18" alt="Pick another theme!">
+        </button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
     <nav class="sub">
         <form class="search-form js-only">
             <div class="search-container">
@@ -64,11 +75,9 @@
     <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">entity</span>.<span class="ident">characters</span>, <span class="string">&quot;&gt;&quot;</span>);
     <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">entity</span>.<span class="ident">entity</span>, <span class="string">&quot;&amp;gt;&quot;</span>);
 }</pre>
-
-<p>There isn&#39;t a 1-to-1 mapping of entities to &quot;characters&quot; which is why this
-crate provides a flat array rather than a map&mdash;the best way to map the
-entities depends on the problem <em>you&#39;re</em> trying to solve.</p>
-
+<p>There isn't a 1-to-1 mapping of entities to &quot;characters&quot; which is why this
+crate provides a flat array rather than a map—the best way to map the
+entities depends on the problem <em>you're</em> trying to solve.</p>
 <p>If you want to create a mapping structure you can make one using static <code>str</code>
 slices to reuse the statically allocated strings from this crate e.g.</p>
 
@@ -78,7 +87,6 @@ slices to reuse the statically allocated strings from this crate e.g.</p>
     <span class="ident">mapping</span>.<span class="ident">insert</span>(<span class="ident">ENTITIES</span>[<span class="number">0</span>].<span class="ident">entity</span>, <span class="ident">ENTITIES</span>[<span class="number">0</span>].<span class="ident">characters</span>);
     <span class="ident">mapping</span>
 }</pre>
-
 <p>Data was generated from
 <a href="https://www.w3.org/TR/html5/entities.json">https://www.w3.org/TR/html5/entities.json</a></p>
 </div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
@@ -88,6 +96,7 @@ slices to reuse the statically allocated strings from this crate e.g.</p>
                                   title='struct entities::Entity'>Entity</a></td>
                            <td class='docblock-short'>
                                 <p>Represents an entry in the array of entity definitions.</p>
+
                            </td>
                        </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
 <table>
@@ -96,6 +105,7 @@ slices to reuse the statically allocated strings from this crate e.g.</p>
                                   title='enum entities::Codepoints'>Codepoints</a></td>
                            <td class='docblock-short'>
                                 <p>The unicode codepoint(s) for the &quot;character&quot; an entity is encoding.</p>
+
                            </td>
                        </tr></table><h2 id='statics' class='section-header'><a href="#statics">Statics</a></h2>
 <table>
@@ -104,6 +114,7 @@ slices to reuse the statically allocated strings from this crate e.g.</p>
                                   title='static entities::ENTITIES'>ENTITIES</a></td>
                            <td class='docblock-short'>
                                 <p>The static constant array of entity definitions.</p>
+
                            </td>
                        </tr></table></section>
     <section id='search' class="content hidden"></section>
@@ -118,20 +129,22 @@ slices to reuse the statically allocated strings from this crate e.g.</p>
                 <h2>Keyboard Shortcuts</h2>
 
                 <dl>
-                    <dt>?</dt>
+                    <dt><kbd>?</kbd></dt>
                     <dd>Show this help dialog</dd>
-                    <dt>S</dt>
+                    <dt><kbd>S</kbd></dt>
                     <dd>Focus the search field</dd>
-                    <dt>↑</dt>
+                    <dt><kbd>↑</kbd></dt>
                     <dd>Move up in search results</dd>
-                    <dt>↓</dt>
+                    <dt><kbd>↓</kbd></dt>
                     <dd>Move down in search results</dd>
-                    <dt>↹</dt>
+                    <dt><kbd>↹</kbd></dt>
                     <dd>Switch tab</dd>
-                    <dt>&#9166;</dt>
+                    <dt><kbd>&#9166;</kbd></dt>
                     <dd>Go to active search result</dd>
-                    <dt style="width:31px;">+ / -</dt>
-                    <dd>Collapse/expand all sections</dd>
+                    <dt><kbd>+</kbd></dt>
+                    <dd>Expand all sections</dd>
+                    <dt><kbd>-</kbd></dt>
+                    <dd>Collapse all sections</dd>
                 </dl>
             </div>
 
